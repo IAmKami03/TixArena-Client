@@ -30,8 +30,7 @@ const SignUp = () => {
   });
 
   const handleChange =
-    (field: keyof typeof form) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
     };
 
@@ -85,16 +84,19 @@ const SignUp = () => {
       }
       const { user, token } = result;
       login(user, token);
-      navigate(user.role === "user" && user.interests.length === 0
-        ? "/onboarding/step1"
-        : "/");
+      navigate(
+        user.role === "user" && user.interests.length === 0
+          ? "/onboarding/step1"
+          : "/",
+      );
     } catch (err) {
       setError(getErrorMessage(err));
     }
   };
 
   const googleSignUp = useGoogleLogin({
-    onSuccess: (tokenResponse) => handleGoogleSuccess(tokenResponse.access_token),
+    onSuccess: (tokenResponse) =>
+      handleGoogleSuccess(tokenResponse.access_token),
     onError: () => setError("Google sign-up failed. Please try again."),
   });
 
@@ -115,7 +117,7 @@ const SignUp = () => {
         <button
           type="button"
           onClick={() => googleSignUp()}
-          className="flex items-center justify-center gap-[12px] w-full h-[62px] rounded-[30px] px-[18px] py-[20px] border border-[#333333] bg-[#0C0C0C] text-[#FFFFFF] font-[Manrope] font-[500] text-[16px] leading-[140%] tracking-[-0.01em]"
+          className="flex items-center cursor-pointer justify-center gap-[12px] w-full h-[62px] rounded-[30px] px-[18px] py-[20px] border border-[#333333] bg-[#0C0C0C] text-[#FFFFFF] font-[Manrope] font-[500] text-[16px] leading-[140%] tracking-[-0.01em]"
         >
           <FcGoogle size={24} />
           Continue with Google
@@ -164,7 +166,10 @@ const SignUp = () => {
 
           <div className="flex items-center justify-between gap-[12px] w-full h-[62px] rounded-[30px] border-2 border-[#262525] bg-[#191919] px-4.5 py-5">
             <div className="flex flex-1 items-center gap-[12px] h-[24px] min-w-0">
-              <IoLockClosedOutline size={24} className="text-[#838383] shrink-0" />
+              <IoLockClosedOutline
+                size={24}
+                className="text-[#838383] shrink-0"
+              />
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your New Password"
@@ -187,7 +192,10 @@ const SignUp = () => {
 
           <div className="flex items-center justify-between gap-[12px] w-full h-[62px] rounded-[30px] border-2 border-[#262525] bg-[#191919] px-4.5 py-5">
             <div className="flex flex-1 items-center gap-[12px] h-[24px] min-w-0">
-              <IoLockClosedOutline size={24} className="text-[#838383] shrink-0" />
+              <IoLockClosedOutline
+                size={24}
+                className="text-[#838383] shrink-0"
+              />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Re-enter your New Password"

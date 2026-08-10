@@ -83,7 +83,7 @@ const SignIn = () => {
         <button
           type="button"
           onClick={() => googleSignIn()}
-          className="flex items-center justify-center gap-[12px] w-full h-[62px] rounded-[30px] px-[18px] py-[20px] border border-[#333333] bg-[#0C0C0C] text-[#FFFFFF] font-[Manrope] font-[500] text-[16px] leading-[140%] tracking-[-0.01em]"
+          className="flex items-center cursor-pointer justify-center gap-[12px] w-full h-[62px] rounded-[30px] px-[18px] py-[20px] border border-[#333333] bg-[#0C0C0C] text-[#FFFFFF] font-[Manrope] font-[500] text-[16px] leading-[140%] tracking-[-0.01em]"
         >
           <FcGoogle size={24} />
           Continue with Google

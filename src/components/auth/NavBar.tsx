@@ -1,9 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/authImages/Tixlogo.svg";
 
 const NavBar = () => {
+  const navigate = useNavigate();
   return (
     <nav className="flex items-center justify-between px-4 sm:px-8 py-4 border-b border-[#1E1E1E] bg-[#0B0B0B]">
-      <button className="text-[#FFFFFF] text-[14px] font-[Manrope] shrink-0">
+      <button
+        onClick={() => navigate("/")}
+        className="text-[#FFFFFF] text-[14px] font-[Manrope] shrink-0 cursor-pointer"
+      >
         <span className="sm:hidden">← Back</span>
         <span className="hidden sm:inline">← Back to Exploring</span>
       </button>
