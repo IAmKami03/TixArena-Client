@@ -28,11 +28,6 @@ const ProfilePage: React.FC = () => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const handleSave = (updated: UserProfile) => {
-    setProfile(updated);
-    setShowModal(false);
-  };
-
   return (
     <div className="min-h-screen bg-[#060612] text-white font-sans">
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 py-9">

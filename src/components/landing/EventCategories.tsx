@@ -1,4 +1,3 @@
-import React from "react";
 import entertainment from "../../assets/images/landingPage/Group.svg";
 import tech from "../../assets/images/landingPage/Hack--Streamline-Manila.svg";
 import corporate from "../../assets/images/landingPage/Group (1).svg";

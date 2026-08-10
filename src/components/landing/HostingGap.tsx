@@ -1,4 +1,3 @@
-import React from "react";
 import flower from "../../assets/images/landingPage/flower.svg";
 import girl from "../../assets/images/landingPage/image 15 (1).png";
 import people from "../../assets/images/landingPage/030b723a3d9c5bf6714ea159f717b57b0729cd48.png";

@@ -1,6 +1,6 @@
 import React from "react";
 import { LuPencil } from "react-icons/lu";
-import type { UserProfile } from "./types";
+import type { UserProfile } from "../../types/profile";
 
 interface ProfileCardProps {
   profile: UserProfile;

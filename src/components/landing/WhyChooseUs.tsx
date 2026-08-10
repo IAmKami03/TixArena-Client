@@ -1,4 +1,3 @@
-import React from "react";
 import free from "../../assets/images/landingPage/Layer_1.svg";
 import speaker from "../../assets/images/landingPage/Frame.svg";
 import booking from "../../assets/images/landingPage/Layer_1 (1).svg";

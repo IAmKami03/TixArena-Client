@@ -1,6 +1,5 @@
 import EventCategories from "../components/landing/EventCategories";
 import ExploreEvents from "../components/landing/ExploreEvents";
-import Footer from "../components/landing/Footer";
 import Hero from "../components/landing/Hero";
 import HostingGap from "../components/landing/HostingGap";
 import TopEvent from "../components/landing/TopEvent";

@@ -9,8 +9,7 @@ import type { Event } from "../../types/event";
 const TopEvent = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
-  const [current, setCurrent] = useState(0);
-  const cardsPerView = 3;
+  const [current] = useState(0);
   const cardWidth = 346;
 
   useEffect(() => {
@@ -18,17 +17,6 @@ const TopEvent = () => {
       .then((all) => setEvents(all.slice(0, 9)))
       .catch(() => undefined);
   }, []);
-
-  const nextSlide = () => {
-    if (current < events.length - cardsPerView) {
-      setCurrent(current + 1);
-    }
-  };
-  const prevSlide = () => {
-    if (current > 0) {
-      setCurrent(current - 1);
-    }
-  };
 
   if (events.length === 0) return null;
 
@@ -50,26 +38,6 @@ const TopEvent = () => {
             Explore More
           </button>
         </div></div>
-
-        {/* {events.length > cardsPerView && (
-          <div className="flex justify-end gap-4 mt-6 mb-4">
-            <button
-              onClick={prevSlide}
-              disabled={current === 0}
-              className="w-10 h-10 rounded-full border text-white disabled:opacity-40"
-            >
-              ←
-            </button>
-
-            <button
-              onClick={nextSlide}
-              disabled={current >= events.length - cardsPerView}
-              className="w-10 h-10 rounded-full border text-white disabled:opacity-40"
-            >
-              →
-            </button>
-          </div>
-        )} */}
 
         {/* Mobile/tablet: plain horizontal scroll strip (no transform math tied to a fixed card width) */}
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide lg:hidden">

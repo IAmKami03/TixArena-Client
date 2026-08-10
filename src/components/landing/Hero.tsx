@@ -1,4 +1,3 @@
-import React from "react";
 import image from "../../assets/images/landingPage/image 10.svg";
 
 const Hero = () => {

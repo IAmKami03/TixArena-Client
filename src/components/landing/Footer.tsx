@@ -1,4 +1,3 @@
-import React from "react";
 import footer from "../../assets/images/landingPage/7bd6d90153a3b6c152303792c3b444c1ab9cf992.png";
 import logo from "../../assets/images/landingPage/Frame 21.svg";
 import { FaWhatsapp } from "react-icons/fa";

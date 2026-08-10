@@ -1,4 +1,3 @@
-import React from "react";
 import logo from "../../assets/images/searchResult/Frame 21.svg";
 import whatsappIcon from "../../assets/images/searchResult/Ellipse 3.svg";
 
