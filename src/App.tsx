@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import GeneralLayout from "./layouts/GeneralLayout";
-import AuthLayout from "./layouts/AuthLayout";
+// import AuthLayout from "./layouts/AuthLayout";
 import LandingPage from "./pages/LandingPage";
 import VendorDashboard from "./pages/vendor/VendorDashboard";
 import VendorLayout from "./layouts/VendorLayout";
@@ -29,7 +29,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="*" element={<Error404 />} />
           <Route path="/explore" element={<Explore />} />
-          <Route path="/event" element={<EventDetailPage />} />
+          {/* <Route path="/event" element={<EventDetailPage />} /> */}
           <Route path="/event/:id" element={<EventDetailPage />} />
           <Route path="/search-result" element={<Event />} />
           <Route path="/profile" element={<ProfilePage />} />

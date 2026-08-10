@@ -113,7 +113,7 @@ const TicketsOverview = ({ event, onEventChange }: TicketsOverviewProps) => {
               }}
               onViewDetails={() => {
                 setIsMenuOpen(false);
-                navigate("/event");
+                navigate(`/event/${event._id}`);
               }}
               onCloseEvent={() => {
                 setIsMenuOpen(false);
