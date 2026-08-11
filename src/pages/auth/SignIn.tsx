@@ -6,24 +6,21 @@ import { HiOutlineMail } from "react-icons/hi";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { PiEyeClosedLight, PiEyeLight } from "react-icons/pi";
 import AuthLayout from "../../layouts/AuthLayout";
-import VerifyEmailModal from "../../components/auth/VerifyEmailModal";
 import { useAuth } from "../../contexts/AuthContext";
 import * as authService from "../../services/authService";
 import { getErrorMessage } from "../../lib/api";
+import { GOOGLE_REDIRECT_URI } from "../../lib/googleAuth";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const redirectTo =
-    (location.state as { from?: string } | null)?.from ?? "/";
+  const redirectTo = (location.state as { from?: string } | null)?.from ?? "/";
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showVerifyModal, setShowVerifyModal] = useState(false);
-  const [verifyEmail, setVerifyEmail] = useState("");
 
   const handleSubmit = async () => {
     setError("");
@@ -45,25 +42,10 @@ const SignIn = () => {
   };
 
   const googleSignIn = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      setError("");
-      try {
-        const result = await authService.googleAuth(
-          tokenResponse.access_token,
-        );
-        if ("email" in result) {
-          setVerifyEmail(result.email);
-          setShowVerifyModal(true);
-          return;
-        }
-        const { user, token } = result;
-        login(user, token);
-        navigate(redirectTo);
-      } catch (err) {
-        setError(getErrorMessage(err));
-      }
-    },
-    onError: () => setError("Google sign-in failed. Please try again."),
+    flow: "auth-code",
+    ux_mode: "redirect",
+    redirect_uri: GOOGLE_REDIRECT_URI,
+    state: encodeURIComponent(redirectTo),
   });
 
   return (
@@ -115,7 +97,10 @@ const SignIn = () => {
 
           <div className="flex items-center justify-between gap-[12px] w-full h-[62px] rounded-[30px] border-2 border-[#262525] bg-[#191919] px-4.5 py-5">
             <div className="flex flex-1 items-center gap-[12px] h-[24px] min-w-0">
-              <IoLockClosedOutline size={24} className="text-[#838383] shrink-0" />
+              <IoLockClosedOutline
+                size={24}
+                className="text-[#838383] shrink-0"
+              />
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your New Password"
@@ -158,21 +143,6 @@ const SignIn = () => {
           <span className="text-[#995DFF] cursor-pointer">Sign Up</span>
         </Link>
       </div>
-
-      {showVerifyModal && (
-        <VerifyEmailModal
-          email={verifyEmail}
-          onSuccess={(user, token) => {
-            login(user, token);
-            navigate(
-              user.role === "user" && user.interests.length === 0
-                ? "/onboarding/step1"
-                : redirectTo,
-            );
-          }}
-          onClose={() => setShowVerifyModal(false)}
-        />
-      )}
     </AuthLayout>
   );
 };

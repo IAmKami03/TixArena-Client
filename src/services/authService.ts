@@ -37,9 +37,10 @@ export const login = async (
 };
 
 export const googleAuth = async (
-  accessToken: string,
+  code: string,
+  redirectUri: string,
 ): Promise<AuthResponse | { email: string }> => {
-  const res = await api.post("/auth/google", { accessToken });
+  const res = await api.post("/auth/google", { code, redirectUri });
   return res.data;
 };
 

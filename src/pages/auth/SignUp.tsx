@@ -10,6 +10,7 @@ import AuthLayout from "../../layouts/AuthLayout";
 import { useAuth } from "../../contexts/AuthContext";
 import * as authService from "../../services/authService";
 import { getErrorMessage } from "../../lib/api";
+import { GOOGLE_REDIRECT_URI } from "../../lib/googleAuth";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -73,31 +74,11 @@ const SignUp = () => {
     }
   };
 
-  const handleGoogleSuccess = async (accessToken: string) => {
-    setError("");
-    try {
-      const result = await authService.googleAuth(accessToken);
-      if ("email" in result) {
-        setVerifyEmail(result.email);
-        setShowModal(true);
-        return;
-      }
-      const { user, token } = result;
-      login(user, token);
-      navigate(
-        user.role === "user" && user.interests.length === 0
-          ? "/onboarding/step1"
-          : "/",
-      );
-    } catch (err) {
-      setError(getErrorMessage(err));
-    }
-  };
-
   const googleSignUp = useGoogleLogin({
-    onSuccess: (tokenResponse) =>
-      handleGoogleSuccess(tokenResponse.access_token),
-    onError: () => setError("Google sign-up failed. Please try again."),
+    flow: "auth-code",
+    ux_mode: "redirect",
+    redirect_uri: GOOGLE_REDIRECT_URI,
+    state: encodeURIComponent("/"),
   });
 
   return (
