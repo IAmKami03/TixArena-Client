@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import VendorNav from "../components/vendor/VendorNav";
 import VendorPageLinks from "../components/vendor/VendorPageLinks";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 const VendorLayout = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -26,6 +27,7 @@ const VendorLayout = () => {
           <Outlet />
         </div>
       </div>
+      <ScrollToTopButton />
     </div>
   );
 };

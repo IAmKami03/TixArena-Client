@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import ScrollToTop from "./components/ScrollToTop";
 import GeneralLayout from "./layouts/GeneralLayout";
 // import AuthLayout from "./layouts/AuthLayout";
 import LandingPage from "./pages/LandingPage";
@@ -25,6 +26,7 @@ import RequireRole from "./components/RequireRole";
 function App() {
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route element={<GeneralLayout />}>
           <Route path="/" element={<LandingPage />} />
