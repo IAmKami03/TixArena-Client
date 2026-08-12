@@ -113,7 +113,7 @@ const NavBar = () => {
 
             <Link
               to="/signup"
-              className="bg-[#995DFF] text-[#FFFFFF] rounded-full px-6 py-3 items-center"
+              className="bg-[#995DFF] text-[#FFFFFF] rounded-full px-4.25 py-3.5 items-center"
             >
               Get Started
             </Link>
