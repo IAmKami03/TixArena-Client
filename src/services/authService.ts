@@ -57,3 +57,14 @@ export const updateOnboarding = async (data: {
   const res = await api.patch("/auth/onboarding", data);
   return res.data.user;
 };
+
+export const updateProfile = async (data: {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  avatar?: string;
+  interests?: string[];
+}): Promise<User> => {
+  const res = await api.patch("/auth/profile", data);
+  return res.data.user;
+};

@@ -16,6 +16,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (user: User, token: string) => void;
+  updateUser: (user: User) => void;
   logout: () => void;
 }
 
@@ -54,6 +55,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem("tix_token", token);
   };
 
+  const updateUser = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem("tix_user", JSON.stringify(userData));
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("tix_user");
@@ -61,7 +67,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

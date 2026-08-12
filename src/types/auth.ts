@@ -6,6 +6,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  avatar?: string;
   role: UserRole;
   gender?: string;
   interests: string[];

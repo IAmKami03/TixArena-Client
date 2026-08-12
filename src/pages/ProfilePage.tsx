@@ -22,6 +22,7 @@ const ProfilePage: React.FC = () => {
       ...prev,
       name: `${user.firstName} ${user.lastName}`,
       email: user.email,
+      avatar: user.avatar || prev.avatar,
       interests: user.interests.length ? user.interests : prev.interests,
     }));
   }, [user]);
@@ -43,6 +44,7 @@ const ProfilePage: React.FC = () => {
           onClose={() => setShowModal(false)}
           initialName={profile.name}
           initialEmail={profile.email}
+          initialAvatar={profile.avatar}
           initialInterests={profile.interests}
         />
       )}

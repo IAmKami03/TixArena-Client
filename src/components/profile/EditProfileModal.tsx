@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { LuX, LuCamera } from "react-icons/lu";
+import { useAuth } from "../../contexts/AuthContext";
+import * as authService from "../../services/authService";
+import { uploadImage } from "../../services/uploadService";
+import { getErrorMessage } from "../../lib/api";
 
 interface EditProfileModalProps {
   onClose: () => void;
   initialName?: string;
   initialEmail?: string;
+  initialAvatar?: string;
   initialInterests?: string[];
 }
 
@@ -14,11 +19,17 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   onClose,
   initialName = "",
   initialEmail = "",
+  initialAvatar = "",
   initialInterests = ["Concert", "Entertainment", "Corporate"],
 }) => {
+  const { updateUser } = useAuth();
   const [name, setName] = useState(initialName);
   const [email, setEmail] = useState(initialEmail);
+  const [avatar, setAvatar] = useState(initialAvatar);
   const [interests, setInterests] = useState<string[]>(initialInterests);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const removeInterest = (tag: string) => {
     setInterests((prev) => prev.filter((t) => t !== tag));
@@ -30,14 +41,49 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
   const remainingInterests = AVAILABLE_INTERESTS.filter((t) => !interests.includes(t));
 
-  const handleSave = () => {
-    // wire this up to your update/profile API call
-    onClose();
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setError("");
+    setIsUploadingAvatar(true);
+    try {
+      const url = await uploadImage(file);
+      setAvatar(url);
+    } catch (err) {
+      setError(getErrorMessage(err));
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
+
+  const handleSave = async () => {
+    setError("");
+    setIsSaving(true);
+    try {
+      const trimmedName = name.trim();
+      const [firstName, ...rest] = trimmedName.split(" ");
+      const lastName = rest.join(" ");
+
+      const updatedUser = await authService.updateProfile({
+        firstName: firstName || undefined,
+        lastName: rest.length ? lastName : undefined,
+        email: email.trim() || undefined,
+        avatar: avatar || undefined,
+        interests,
+      });
+      updateUser(updatedUser);
+      onClose();
+    } catch (err) {
+      setError(getErrorMessage(err));
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="relative w-full max-w-md rounded-2xl bg-[#12141c] border border-white/10 p-6">
+      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-[#12141c] border border-white/10 p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-xl font-serif text-slate-50">Edit Profile</h2>
@@ -52,14 +98,27 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
         {/* Avatar with upload overlay */}
         <div className="flex justify-center mb-6">
           <div className="relative">
-            <img
-              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=80"
-              alt="Profile"
-              className="w-20 h-20 rounded-full object-cover"
-            />
-            <button className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-indigo-400 flex items-center justify-center border-2 border-[#12141c]">
+            {avatar ? (
+              <img
+                src={avatar}
+                alt="Profile"
+                className={`w-20 h-20 rounded-full object-cover ${isUploadingAvatar ? "opacity-50" : ""}`}
+              />
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center text-slate-400 text-xs">
+                No photo
+              </div>
+            )}
+            <label className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-indigo-400 flex items-center justify-center border-2 border-[#12141c] cursor-pointer">
               <LuCamera size={12} className="text-white" />
-            </button>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                disabled={isUploadingAvatar}
+                className="hidden"
+              />
+            </label>
           </div>
         </div>
 
@@ -118,12 +177,19 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
           )}
         </div>
 
+        {error && <p className="text-red-400 text-xs mb-3">{error}</p>}
+
         {/* Save button */}
         <button
           onClick={handleSave}
-          className="w-full rounded-xl py-3 text-sm font-medium text-white bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-300 hover:opacity-90 transition"
+          disabled={isSaving || isUploadingAvatar}
+          className="w-full rounded-xl py-3 text-sm font-medium text-white bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-300 hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Save Changes
+          {isUploadingAvatar
+            ? "Uploading photo..."
+            : isSaving
+              ? "Saving..."
+              : "Save Changes"}
         </button>
       </div>
     </div>
