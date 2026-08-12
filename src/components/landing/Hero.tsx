@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import image from "../../assets/images/landingPage/image 10.svg";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="flex justify-center items-center mt-8 sm:mt-10 px-4 sm:px-6 lg:px-0">
@@ -12,7 +14,10 @@ const Hero = () => {
             Discover events that match your vibe from concerts and parties to
             experiences you didn’t even know you needed.
           </p>
-          <button className="w-full max-w-[240px] sm:w-auto sm:max-w-none bg-[#995DFF] text-[#FFFFFF] rounded-full px-5 py-3 mt-5 font-medium">
+          <button
+            onClick={() => navigate("/explore")}
+            className="w-full max-w-[240px] sm:w-auto sm:max-w-none bg-[#995DFF] text-[#FFFFFF] rounded-full px-5 py-3 mt-5 font-medium"
+          >
             Discover
           </button>
         </div>

@@ -5,14 +5,14 @@ import backgroundImg from "../../assets/images/landingPage/50c3949d293f5b3f71bdb
 const WhyChooseUs = () => {
   return (
     <div>
-      <div className="flex justify-center mt-12 px-4 sm:px-6 lg:px-0">
+      <div className="flex justify-center mt-12 px-4 sm:px-6 lg:px-0 text-[#CECECE]">
         <div className="w-full max-w-[1020px] h-auto border-0">
-          <h2 className="text-[26px] sm:text-[40px] lg:text-[60px] leading-[1.15] lg:leading-[normal] font-Instrument Serif font-normal">
+          <h2 className="text-[26px] text-start sm:text-[40px] lg:text-[60px] leading-[1.15] lg:leading-[normal] font-Instrument Serif font-normal">
             Why Choose Us
           </h2>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-0 sm:justify-between mt-5">
-            <div className="border bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
+            <div className="border border-[#262525] bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
               <div className="flex gap-3 items-center justify-center">
                 <div>
                   <img src={free} alt="" />
@@ -25,7 +25,7 @@ const WhyChooseUs = () => {
                 </div>
               </div>
             </div>
-            <div className="border bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
+            <div className="border border-[#262525] bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
               <div className="flex gap-3 items-center">
                 <div>
                   <img src={speaker} alt="" />
@@ -38,7 +38,7 @@ const WhyChooseUs = () => {
                 </div>
               </div>
             </div>
-            <div className="border bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
+            <div className="border border-[#262525] bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
               <div className="flex gap-3 items-center">
                 <div>
                   <img src={booking} alt="" />

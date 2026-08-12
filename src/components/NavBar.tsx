@@ -37,7 +37,9 @@ const NavBar = () => {
             <Link to="/explore" className="text-[#FFFFFF]">
               Explore
             </Link>
-            <p className="text-[#FFFFFF]">Cinema</p>
+            <p onClick={() => navigate("/cinema")} className="text-[#FFFFFF]">
+              Cinema
+            </p>
           </div>
 
           <div className="hidden md:flex items-center px-4 py-2 gap-2 w-[250px] rounded-full bg-[#262525]">
@@ -84,7 +86,9 @@ const NavBar = () => {
 
             <NavUserMenu
               isOpen={isMenuOpen}
-              canSwitchToCreate={user.role === "vendor" || user.role === "admin"}
+              canSwitchToCreate={
+                user.role === "vendor" || user.role === "admin"
+              }
               onClose={() => setIsMenuOpen(false)}
               onViewProfile={() => {
                 setIsMenuOpen(false);

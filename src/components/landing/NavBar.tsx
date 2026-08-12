@@ -6,7 +6,6 @@ import { CiSearch } from "react-icons/ci";
 import logo from "../../assets/images/landingPage/Frame 21.svg";
 import { CiCircleQuestion } from "react-icons/ci";
 import { useSearch } from "../../contexts/SearchContext";
-import { Link } from "react-router-dom";
 const NavBar = () => {
   const { searchQuery, setSearchQuery } = useSearch();
   return (
