@@ -130,82 +130,82 @@ const AttendeeManagement = ({ eventId }: AttendeeManagementProps) => {
           </p>
         ) : (
           <>
-          <table className="hidden lg:table w-full text-left border-collapse">
-            <thead>
-              <tr className="text-[#838383] text-[14px] font-normal">
-                <th className="py-4 px-4 font-normal whitespace-nowrap">
-                  Name
-                </th>
-                <th className="py-4 px-4 font-normal whitespace-nowrap">
-                  Email
-                </th>
-                <th className="py-4 px-4 font-normal whitespace-nowrap">
-                  Ticket Code
-                </th>
-                <th className="py-4 px-4 font-normal whitespace-nowrap">
-                  Ticket Type
-                </th>
-                <th className="py-4 px-4 font-normal whitespace-nowrap">
-                  Quantity
-                </th>
-                <th className="py-4 px-4 font-normal whitespace-nowrap">
-                  Reg. date
-                </th>
-                <th className="py-4 px-4 font-normal whitespace-nowrap">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {pageItems.map((attendee) => (
-                <tr
-                  key={attendee._id}
-                  className="border-t border-[#262525] text-[#ECECEC] text-[16px]"
-                >
-                  <td className="py-4 px-4 whitespace-nowrap">
-                    {attendee.fullName}
-                  </td>
-                  <td className="py-4 px-4 text-[#ABABAB] whitespace-nowrap">
-                    {attendee.email}
-                  </td>
-                  <td className="py-4 px-4 text-[#ABABAB] whitespace-nowrap">
-                    {attendee.code}
-                  </td>
-                  <td className="py-4 px-4 whitespace-nowrap">
-                    {attendee.ticketName}
-                  </td>
-                  <td className="py-4 px-4 whitespace-nowrap">
-                    {attendee.quantity}
-                  </td>
-                  <td className="py-4 px-4 text-[#ABABAB] whitespace-nowrap">
-                    {format(new Date(attendee.createdAt), "d MMM, yyyy")}
-                  </td>
-                  <td className=" py-4 px-4">
-                    {attendee.checkedIn ? (
-                      <span className=" bg-[#1F3B24] text-[#5FD787] text-[14px] font-medium px-1 py-1.5 rounded-[30px]">
-                        Checked In
-                      </span>
-                    ) : (
-                      <span className=" bg-[#1A1A1A] text-[#838383] text-[14px] font-medium px-6 py-1.5 rounded-[30px]">
-                        ---
-                      </span>
-                    )}
-                  </td>
+            <table className="hidden lg:table w-full text-left border-collapse ">
+              <thead>
+                <tr className="text-[#838383] text-[14px] font-normal">
+                  <th className="py-4 px-4 font-normal whitespace-nowrap">
+                    Name
+                  </th>
+                  <th className="py-4 px-4 font-normal whitespace-nowrap">
+                    Email
+                  </th>
+                  <th className="py-4 px-4 font-normal whitespace-nowrap">
+                    Ticket Code
+                  </th>
+                  <th className="py-4 px-4 font-normal whitespace-nowrap">
+                    Ticket Type
+                  </th>
+                  <th className="py-4 px-4 font-normal whitespace-nowrap">
+                    Quantity
+                  </th>
+                  <th className="py-4 px-4 font-normal whitespace-nowrap">
+                    Reg. date
+                  </th>
+                  <th className="py-4 px-4 font-normal whitespace-nowrap">
+                    Status
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {pageItems.map((attendee) => (
+                  <tr
+                    key={attendee._id}
+                    className="border-t border-[#262525] text-[#ECECEC] text-[16px]"
+                  >
+                    <td className="py-4 px-4 whitespace-nowrap">
+                      {attendee.fullName}
+                    </td>
+                    <td className="py-4 px-4 text-[#ABABAB] whitespace-nowrap">
+                      {attendee.email}
+                    </td>
+                    <td className="py-4 px-4 text-[#ABABAB] whitespace-nowrap">
+                      {attendee.code}
+                    </td>
+                    <td className="py-4 px-4 whitespace-nowrap">
+                      {attendee.ticketName}
+                    </td>
+                    <td className="py-4 px-4 whitespace-nowrap">
+                      {attendee.quantity}
+                    </td>
+                    <td className="py-4 px-4 text-[#ABABAB] whitespace-nowrap">
+                      {format(new Date(attendee.createdAt), "d MMM, yyyy")}
+                    </td>
+                    <td className=" py-3 px-3 whitespace-nowrap">
+                      {attendee.checkedIn ? (
+                        <span className=" bg-[#1F3B24] text-[#5FD787] text-[13px] font-medium px-1.5 py-1 rounded-[30px]">
+                          Checked In
+                        </span>
+                      ) : (
+                        <span className=" bg-[#1A1A1A] text-[#838383] text-[14px] font-medium px-6 py-1.5 rounded-[30px]">
+                          ---
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-          {/* Mobile/tablet: expandable accordion list */}
-          <div className="lg:hidden flex flex-col">
-            <div className="flex items-center justify-between px-4 py-3 text-[#838383] text-[13px]">
-              <span>Name</span>
-              <span>Status</span>
+            {/* Mobile/tablet: expandable accordion list */}
+            <div className="lg:hidden flex flex-col">
+              <div className="flex items-center justify-between px-4 py-3 text-[#838383] text-[13px]">
+                <span>Name</span>
+                <span>Status</span>
+              </div>
+              {pageItems.map((attendee) => (
+                <AttendeeMobileRow key={attendee._id} attendee={attendee} />
+              ))}
             </div>
-            {pageItems.map((attendee) => (
-              <AttendeeMobileRow key={attendee._id} attendee={attendee} />
-            ))}
-          </div>
           </>
         )}
       </div>
