@@ -10,7 +10,7 @@ const EventCard = ({ event }: EventCardProps) => {
   return (
     <Link
       to={`/event/${event.id}`}
-      className="flex flex-col sm:flex-row text-white items-start sm:justify-between bg-[#121212] border border-[#2A2A2A] rounded-[28px] overflow-hidden p-4 sm:p-6.5 mb-7 gap-4 sm:gap-0 z ev"
+      className="flex flex-col sm:flex-row text-white items-start sm:justify-between bg-[#121212] border border-[#2A2A2A] rounded-[28px] overflow-hidden p-4 sm:p-6.25 mb-6.25 gap-4 sm:gap-0 z ev"
     >
       <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-7 w-full sm:w-auto">
         <div className="w-full sm:w-auto">
@@ -20,14 +20,14 @@ const EventCard = ({ event }: EventCardProps) => {
             className="rounded-[20px] w-full sm:w-59.25 h-48.5 object-cover"
           />
         </div>
-        <div>
+        <div className="flex flex-col items-start">
           <h1 className="text-[23px] font-semibold ">{event.title}</h1>
           <div className="flex flex-col gap-7.25">
             <div className="flex items-center gap-5 text-[#CECECE]">
               <p>{event.date}</p>
               <p>{event.time}</p>
             </div>
-            <h3 className="text-[23px]">{event.price}</h3>
+            <h3 className="text-[23px] text-start">{event.price}</h3>
             <div className="flex items-center gap-2.5 bg-[#262525] p-2.5 rounded-[60px] w-fit">
               <FaLocationDot className="text-[#995DFF]" />
               <p>{event.location}</p>

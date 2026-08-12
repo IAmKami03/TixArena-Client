@@ -7,45 +7,45 @@ const WhyChooseUs = () => {
     <div>
       <div className="flex justify-center mt-12 px-4 sm:px-6 lg:px-0">
         <div className="w-full max-w-[1020px] h-auto border-0">
-          <h2 className="text-[36px] sm:text-[48px] lg:text-[60px] font-Instrument Serif font-normal">
+          <h2 className="text-[26px] sm:text-[40px] lg:text-[60px] leading-[1.15] lg:leading-[normal] font-Instrument Serif font-normal">
             Why Choose Us
           </h2>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-0 sm:justify-between mt-5">
-            <div className="border rounded-3xl px-4 py-2 w-full sm:w-[300px] h-auto min-h-[100px]">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-0 sm:justify-between mt-5">
+            <div className="border bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
               <div className="flex gap-3 items-center justify-center">
                 <div>
                   <img src={free} alt="" />
                 </div>
                 <div>
-                  <p className="font-bold text-lg">Register for Free</p>
-                  <p className="text-[#CECECE] text-sm">
+                  <p className="font-bold text-[15px] lg:text-lg">Register for Free</p>
+                  <p className="text-[#CECECE] text-[13px] lg:text-sm">
                     Sign up with email or Google and create events in minutes.
                   </p>
                 </div>
               </div>
             </div>
-            <div className="border rounded-3xl px-4 py-2 w-full sm:w-[300px] h-auto min-h-[100px]">
+            <div className="border bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
               <div className="flex gap-3 items-center">
                 <div>
                   <img src={speaker} alt="" />
                 </div>
                 <div>
-                  <p className="font-bold text-lg">Promote Your Event</p>
-                  <p className="text-[#CECECE] text-sm">
+                  <p className="font-bold text-[15px] lg:text-lg">Promote Your Event</p>
+                  <p className="text-[#CECECE] text-[13px] lg:text-sm">
                     Share on social media & email in a few clicks.
                   </p>
                 </div>
               </div>
             </div>
-            <div className="border rounded-3xl px-4 py-2 w-full sm:w-[300px] h-auto min-h-[100px]">
+            <div className="border bg-white/[0.02] lg:bg-transparent rounded-3xl px-4 py-3 lg:py-2 w-full sm:w-[300px] h-auto min-h-[92px] lg:min-h-[100px]">
               <div className="flex gap-3 items-center">
                 <div>
                   <img src={booking} alt="" />
                 </div>
                 <div>
-                  <p className="font-bold text-lg">Fast Booking</p>
-                  <p className="text-[#CECECE] text-sm">
+                  <p className="font-bold text-[15px] lg:text-lg">Fast Booking</p>
+                  <p className="text-[#CECECE] text-[13px] lg:text-sm">
                     Swift payments with top-notch security.
                   </p>
                 </div>

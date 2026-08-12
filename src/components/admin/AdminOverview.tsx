@@ -304,7 +304,8 @@ const AdminOverview = () => {
                 : `No ${statusFilter.toLowerCase()} events.`}
             </p>
           ) : (
-            <table className="w-full text-left border-collapse">
+            <>
+            <table className="hidden lg:table w-full text-left border-collapse">
               <thead>
                 <tr className="text-[#838383] text-[14px] font-normal">
                   <th className="py-4 px-4 font-normal whitespace-nowrap">
@@ -385,6 +386,76 @@ const AdminOverview = () => {
                 ))}
               </tbody>
             </table>
+
+            {/* Mobile/tablet: card list instead of a horizontally-scrolling table */}
+            <div className="lg:hidden flex flex-col gap-3 p-3">
+              {pageItems.map((event) => {
+                const totalTickets = event.tickets.reduce(
+                  (sum, t) => sum + t.quantity,
+                  0,
+                );
+                return (
+                  <div
+                    key={event._id}
+                    className="rounded-[20px] border border-[#262525] p-4 flex flex-col gap-3"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-[#ECECEC] text-[16px] font-medium truncate">
+                          {event.name}
+                        </p>
+                        <div className="flex items-center gap-1.5 text-[#ABABAB] text-[13px] mt-1">
+                          <span className="w-5 h-5 rounded-full bg-[#262525] flex items-center justify-center shrink-0">
+                            <LuUser className="text-[#ABABAB]" size={11} />
+                          </span>
+                          <span className="truncate">
+                            {vendorName(event.vendor)}
+                          </span>
+                        </div>
+                      </div>
+                      <span
+                        className={`shrink-0 text-[12px] font-medium px-3 py-1 rounded-[30px] ${STATUS_STYLES[event.status]}`}
+                      >
+                        {event.status}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2.5 text-[13px]">
+                      <div>
+                        <p className="text-[#838383]">Category</p>
+                        <p className="text-[#ECECEC]">{event.category}</p>
+                      </div>
+                      <div>
+                        <p className="text-[#838383]">Date</p>
+                        <p className="text-[#ECECEC]">
+                          {format(new Date(event.date), "d MMM, yyyy")}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#838383]">Total Ticket</p>
+                        <p className="text-[#ECECEC]">{totalTickets}</p>
+                      </div>
+                      <div>
+                        <p className="text-[#838383]">Date created</p>
+                        <p className="text-[#ECECEC]">
+                          {format(new Date(event.createdAt), "d MMM, yyyy")}
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setSelectedEventId(event._id)}
+                      className="self-start flex items-center gap-2 bg-[#161616] rounded-full px-3.5 py-1.5"
+                    >
+                      <p className="text-[13px] font-normal text-[#CECECE]">
+                        View
+                      </p>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            </>
           )}
         </div>
 

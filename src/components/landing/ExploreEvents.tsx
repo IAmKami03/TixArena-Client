@@ -34,8 +34,8 @@ const ExploreEvents = () => {
 
   return (
     <div className="flex justify-center px-4 sm:px-6 lg:px-0">
-      <div className="w-full max-w-[1020px] border-0 mt-4">
-        <h2 className="text-[32px] sm:text-[40px] lg:text-[50px] text-white font-Instrument Serif font-normal">
+      <div className="w-full max-w-[1020px] text-start border-0 mt-4">
+        <h2 className="text-[22px] sm:text-[30px] lg:text-[50px] text-white font-Instrument Serif font-normal">
           Explore Events
         </h2>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -51,7 +51,7 @@ const ExploreEvents = () => {
                 key={category}
                 type="button"
                 onClick={() => setSelectedCategory(category)}
-                className={`text-[16px] font-inter font-normal border rounded-full px-4 py-2 items-center cursor-pointer transition-colors ${
+                className={`text-[13px] sm:text-[14px] lg:text-[16px] font-inter font-normal border rounded-full px-3 py-1.5 sm:px-4 sm:py-2 items-center cursor-pointer transition-colors ${
                   category === selectedCategory
                     ? "bg-[#995DFF] border-[#995DFF] text-white"
                     : "text-[#CECECE] border-[#1E1E1E] hover:bg-[#262525] hover:border-[#995DFF]"

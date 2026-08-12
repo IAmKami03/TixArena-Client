@@ -62,7 +62,8 @@ const VendorRequestsList = () => {
             No pending creator requests.
           </p>
         ) : (
-          <table className="w-full text-left border-collapse">
+          <>
+          <table className="hidden lg:table w-full text-left border-collapse">
             <thead>
               <tr className="text-[#838383] text-[14px] font-normal">
                 <th className="py-4 px-4 font-normal whitespace-nowrap">
@@ -120,6 +121,50 @@ const VendorRequestsList = () => {
               ))}
             </tbody>
           </table>
+
+          {/* Mobile/tablet: card list instead of a horizontally-scrolling table */}
+          <div className="lg:hidden flex flex-col gap-3 p-3">
+            {requests.map((request) => (
+              <div
+                key={request._id}
+                className="rounded-[20px] border border-[#262525] p-4 flex flex-col gap-3"
+              >
+                <div className="min-w-0">
+                  <p className="text-[#ECECEC] text-[16px] font-medium truncate">
+                    {request.firstName} {request.lastName}
+                  </p>
+                  <p className="text-[#ABABAB] text-[13px] mt-0.5 truncate">
+                    {request.email}
+                  </p>
+                  <p className="text-[#838383] text-[12px] mt-0.5">
+                    Requested{" "}
+                    {request.updatedAt
+                      ? format(new Date(request.updatedAt), "d MMM, yyyy")
+                      : "—"}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => handleResolve(request._id, true)}
+                    disabled={resolvingId === request._id}
+                    className="bg-[#1F3B24] text-[#5FD787] text-[14px] font-medium px-4 py-1.5 rounded-[30px] disabled:opacity-60"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleResolve(request._id, false)}
+                    disabled={resolvingId === request._id}
+                    className="bg-[#3B1F1F] text-[#FF6B6B] text-[14px] font-medium px-4 py-1.5 rounded-[30px] disabled:opacity-60"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          </>
         )}
       </div>
     </div>

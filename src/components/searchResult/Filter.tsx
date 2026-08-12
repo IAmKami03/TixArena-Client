@@ -1,8 +1,13 @@
 import { CiCalendar } from "react-icons/ci";
+import { LuX } from "react-icons/lu";
 import { filters } from "../../data/filters";
 import { useEvents } from "../../contexts/EventContext";
 
-const Filter = () => {
+interface FilterProps {
+  onClose?: () => void;
+}
+
+const Filter = ({ onClose }: FilterProps) => {
   const {
     selectedCategory,
     setSelectedCategory,
@@ -19,9 +24,21 @@ const Filter = () => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h1 className="text-[20px] text-[#ECECEC] font-normal">Filter</h1>
-        <button onClick={clearFilters} className="text-[16px] text-[#995DFF]">
-          Clear filter
-        </button>
+        <div className="flex items-center gap-4">
+          <button onClick={clearFilters} className="text-[16px] text-[#995DFF]">
+            Clear filter
+          </button>
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close filters"
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-[#262525] text-[#ECECEC]"
+            >
+              <LuX size={16} />
+            </button>
+          )}
+        </div>
       </div>
       <div className=" flex flex-col gap-4">
         {filters.map((filter) => (

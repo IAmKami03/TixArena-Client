@@ -39,7 +39,7 @@ const NoResult = () => {
       <div className="flex flex-col justify-between items-center text-center  gap-4 border border-[#262525] rounded-[30px] mb-17.5">
         <div className="max-w-sm mx-auto py-25">
           <img src={ticketImage} alt="" className="max-w-sm mx-auto" />
-          <h1 className="text-[45px]">No Result Found</h1>
+          <h1 className="text-[45px] text-[#CECECE]">No Result Found</h1>
           <p className="text-[#CECECE]">
             Complete the final steps to get your personalized account up and
             running.
@@ -47,8 +47,8 @@ const NoResult = () => {
         </div>
       </div>
       {suggestions.length > 0 && (
-        <div>
-          <h1 className="text-[35px] pb-2.75">You may like</h1>
+        <div className="text-start">
+          <h1 className="text-[35px] pb-2.75 text-[#CECECE]">You may like</h1>
           {suggestions.map((event) => (
             <EventCard key={event._id} event={toEventCardData(event)} />
           ))}
