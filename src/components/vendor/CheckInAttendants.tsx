@@ -5,7 +5,10 @@ import { LuQrCode, LuCamera, LuChevronDown, LuChevronUp } from "react-icons/lu";
 import searchIcon from "../../assets/images/search-01.svg";
 import nochechIn from "../../assets/images/vendorImages/Ticket-checkin.svg";
 import { getEvent } from "../../services/eventService";
-import { checkInByCode, getEventAttendees } from "../../services/bookingService";
+import {
+  checkInByCode,
+  getEventAttendees,
+} from "../../services/bookingService";
 import { getErrorMessage } from "../../lib/api";
 import { usePagination } from "../../hooks/usePagination";
 import Pagination from "../common/Pagination";
@@ -30,7 +33,9 @@ const AttendeeMobileRow = ({ entry }: { entry: Booking }) => {
         onClick={() => setIsOpen((prev) => !prev)}
         className="w-full flex items-center justify-between gap-3 py-4 px-4 text-left"
       >
-        <span className="text-[#ECECEC] text-[16px] truncate">{entry.fullName}</span>
+        <span className="text-[#ECECEC] text-[16px] truncate">
+          {entry.fullName}
+        </span>
         <span className="flex items-center gap-2 shrink-0">
           {entry.checkedIn ? (
             <span className="bg-[#1F3B24] text-[#5FD787] text-[13px] font-medium px-3 py-1 rounded-[30px]">
@@ -102,7 +107,9 @@ const CheckInAttendants = () => {
 
   useEffect(() => {
     if (!eventId) return;
-    getEvent(eventId).then(setEvent).catch(() => undefined);
+    getEvent(eventId)
+      .then(setEvent)
+      .catch(() => undefined);
     loadAttendees();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
@@ -151,7 +158,8 @@ const CheckInAttendants = () => {
 
   const lookupBookingByCode = (rawCode: string): Booking | undefined =>
     attendees.find(
-      (entry) => entry.code.trim().toUpperCase() === rawCode.trim().toUpperCase(),
+      (entry) =>
+        entry.code.trim().toUpperCase() === rawCode.trim().toUpperCase(),
     );
 
   return (
@@ -279,7 +287,7 @@ const CheckInAttendants = () => {
           </div>
         </div>
 
-        <div className="w-full overflow-x-auto rounded-[20px] bg-[#0B0B0B]">
+        <div className="w-full overflow-x-auto hide-scrollbar rounded-[20px] bg-[#0B0B0B]">
           {isLoading ? (
             <p className="text-[#ABABAB] text-[16px] p-4">
               Loading attendees...
@@ -343,7 +351,7 @@ const CheckInAttendants = () => {
                       </td>
                       <td className="py-4 px-4">
                         {entry.checkedIn ? (
-                          <span className="bg-[#1F3B24] text-[#5FD787] text-[14px] font-medium px-4 py-1.5 rounded-[30px]">
+                          <span className="bg-[#1F3B24] text-[#5FD787] text-[13px] font-medium px-1.5 py-1 rounded-[30px]">
                             Checked In
                           </span>
                         ) : (
@@ -377,8 +385,8 @@ const CheckInAttendants = () => {
                     No Check-in
                   </p>
                   <p className="text-[#838383] text-[14px] text-center max-w-xs">
-                    You haven't check-in any users yet, when you do you will find
-                    them here.
+                    You haven't check-in any users yet, when you do you will
+                    find them here.
                   </p>
                 </div>
               )}
