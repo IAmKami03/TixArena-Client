@@ -83,7 +83,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-[#12141c] border border-white/10 p-6">
+      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto hide-scrollbar rounded-2xl bg-[#12141c] border border-white/10 p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-xl font-serif text-slate-50">Edit Profile</h2>
