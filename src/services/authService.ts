@@ -68,3 +68,20 @@ export const updateProfile = async (data: {
   const res = await api.patch("/auth/profile", data);
   return res.data.user;
 };
+
+export const forgotPassword = async (email: string): Promise<void> => {
+  await api.post("/auth/forgot-password", { email });
+};
+
+export const resetPassword = async (
+  email: string,
+  code: string,
+  newPassword: string,
+): Promise<AuthResponse> => {
+  const res = await api.post("/auth/reset-password", {
+    email,
+    code,
+    newPassword,
+  });
+  return res.data;
+};

@@ -18,3 +18,11 @@ export const resolveVendorRequest = async (
   const res = await api.patch(`/users/vendor-requests/${userId}`, { approve });
   return res.data.user;
 };
+
+export const getGenderStats = async (): Promise<{
+  female: number;
+  male: number;
+}> => {
+  const res = await api.get("/users/gender-stats");
+  return res.data;
+};

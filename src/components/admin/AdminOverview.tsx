@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
@@ -8,10 +8,12 @@ import eveimg from "../../assets/images/vendorImages/eventimg2.svg";
 import EachEventList from "./EachEventList";
 import type { EventDetails } from "./EachEventList";
 import { getAllEvents, updateEventStatus } from "../../services/eventService";
+import { getGenderStats } from "../../services/userService";
 import { getErrorMessage } from "../../lib/api";
 import { usePagination } from "../../hooks/usePagination";
 import Pagination from "../common/Pagination";
 import FilterDropdown from "../common/FilterDropdown";
+import { EVENT_CATEGORIES } from "../../types/event";
 import type { Event, EventStatus } from "../../types/event";
 
 const PAGE_SIZE = 9;
@@ -28,21 +30,16 @@ interface Slice {
   value: number;
 }
 
-const EVENT_CATEGORIES: Slice[] = [
-  { label: "Entertainment", color: "#8B5CF6", value: 6 },
-  { label: "Tech", color: "#22C55E", value: 27 },
-  { label: "Corporate", color: "#1E1B4B", value: 4 },
-  { label: "Sport", color: "#22D3EE", value: 6 },
-  { label: "Charity", color: "#EC4899", value: 29 },
-  { label: "Education", color: "#F97316", value: 8 },
-  { label: "Comedy", color: "#EF4444", value: 10 },
-  { label: "Concert", color: "#FACC15", value: 10 },
-];
-
-const USER_RATIO: Slice[] = [
-  { label: "Female", color: "#A78BFA", value: 60 },
-  { label: "Male", color: "#4F46E5", value: 40 },
-];
+const CATEGORY_COLORS: Record<string, string> = {
+  Entertainment: "#8B5CF6",
+  Tech: "#22C55E",
+  Corporate: "#1E1B4B",
+  Sport: "#22D3EE",
+  Education: "#F97316",
+  Charity: "#EC4899",
+  Comedy: "#EF4444",
+  Concert: "#FACC15",
+};
 
 const tooltipStyle = {
   background: "#1A1A1A",
@@ -83,6 +80,7 @@ const AdminOverview = () => {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [actionError, setActionError] = useState("");
   const [statusFilter, setStatusFilter] = useState<"All" | EventStatus>("All");
+  const [genderStats, setGenderStats] = useState({ female: 0, male: 0 });
   const selectedEvent = events.find((event) => event._id === selectedEventId);
 
   useEffect(() => {
@@ -90,7 +88,31 @@ const AdminOverview = () => {
       .then(setEvents)
       .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setIsLoading(false));
+
+    getGenderStats()
+      .then(setGenderStats)
+      .catch(() => {
+        /* non-critical, chart just falls back to zeros */
+      });
   }, []);
+
+  const eventCategoryData = useMemo<Slice[]>(
+    () =>
+      EVENT_CATEGORIES.map((label) => ({
+        label,
+        color: CATEGORY_COLORS[label] ?? "#8B5CF6",
+        value: events.filter((event) => event.category === label).length,
+      })),
+    [events],
+  );
+
+  const userRatioData = useMemo<Slice[]>(
+    () => [
+      { label: "Female", color: "#A78BFA", value: genderStats.female },
+      { label: "Male", color: "#4F46E5", value: genderStats.male },
+    ],
+    [genderStats],
+  );
 
   const filteredEvents =
     statusFilter === "All"
@@ -188,7 +210,7 @@ const AdminOverview = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={EVENT_CATEGORIES}
+                    data={eventCategoryData}
                     dataKey="value"
                     nameKey="label"
                     cx="50%"
@@ -198,7 +220,7 @@ const AdminOverview = () => {
                     stroke="none"
                     isAnimationActive={false}
                   >
-                    {EVENT_CATEGORIES.map((c) => (
+                    {eventCategoryData.map((c) => (
                       <Cell key={c.label} fill={c.color} />
                     ))}
                   </Pie>
@@ -211,7 +233,7 @@ const AdminOverview = () => {
               </ResponsiveContainer>
             </div>
             <div className="grid grid-cols-2 gap-x-5 gap-y-2.5">
-              {EVENT_CATEGORIES.map((c) => (
+              {eventCategoryData.map((c) => (
                 <div
                   key={c.label}
                   className="flex items-center gap-2 text-[14px] text-[#CECECE] whitespace-nowrap"
@@ -234,7 +256,7 @@ const AdminOverview = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={USER_RATIO}
+                    data={userRatioData}
                     dataKey="value"
                     nameKey="label"
                     cx="50%"
@@ -243,7 +265,7 @@ const AdminOverview = () => {
                     stroke="none"
                     isAnimationActive={false}
                   >
-                    {USER_RATIO.map((u) => (
+                    {userRatioData.map((u) => (
                       <Cell key={u.label} fill={u.color} />
                     ))}
                   </Pie>
@@ -256,7 +278,7 @@ const AdminOverview = () => {
               </ResponsiveContainer>
             </div>
             <div className="flex flex-col gap-3">
-              {USER_RATIO.map((u) => (
+              {userRatioData.map((u) => (
                 <div
                   key={u.label}
                   className="flex items-center gap-2 text-[14px] text-[#CECECE]"

@@ -122,6 +122,13 @@ const SignIn = () => {
           </div>
         </div>
 
+        <Link
+          to="/forgot-password"
+          className="self-end font-[Manrope] font-medium text-[14px] text-[#995DFF] leading-[140%] tracking-[-0.01em]"
+        >
+          Forgot password?
+        </Link>
+
         {error && (
           <p className="text-[#FF7466] font-[Manrope] text-[14px]">{error}</p>
         )}
