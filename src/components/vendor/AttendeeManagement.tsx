@@ -130,7 +130,7 @@ const AttendeeManagement = ({ eventId }: AttendeeManagementProps) => {
           </p>
         ) : (
           <>
-            <table className="hidden lg:table w-full text-left border-collapse ">
+            <table className="hidden lg:table w-full text-left border-collapse hide-scrollbar">
               <thead>
                 <tr className="text-[#838383] text-[14px] font-normal">
                   <th className="py-4 px-4 font-normal whitespace-nowrap">
