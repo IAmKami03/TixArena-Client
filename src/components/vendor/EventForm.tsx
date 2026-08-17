@@ -92,11 +92,11 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
             placeholder="Enter location address"
             className={`${inputBase} pr-12`}
           />
-          <img
+          {/* <img
             src={arrowDown}
             alt=""
             className="absolute right-5 pointer-events-none"
-          />
+          /> */}
         </div>
       </div>
 

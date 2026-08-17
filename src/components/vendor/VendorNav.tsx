@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 import logo from "../../assets/images/vendorImages/Vendor-logo.svg";
@@ -6,6 +7,7 @@ import refresh from "../../assets/images/vendorImages/Refresh.svg";
 import prof from "../../assets/images/vendorImages/profile.svg";
 import arrDwn from "../../assets/images/vendorImages/arrow-down.svg";
 import { useAuth } from "../../contexts/AuthContext";
+import NavUserMenu from "../NavUserMenu";
 
 interface VendorNavProps {
   isMobileNavOpen: boolean;
@@ -14,7 +16,8 @@ interface VendorNavProps {
 
 const VendorNav = ({ isMobileNavOpen, onToggleMobileNav }: VendorNavProps) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
@@ -63,8 +66,32 @@ const VendorNav = ({ isMobileNavOpen, onToggleMobileNav }: VendorNavProps) => {
                 Switch to Browser
               </p>
             </div>
-            <img src={prof} alt="" />
-            <img src={arrDwn} alt="" />
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+                aria-label="Account menu"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <img src={prof} alt="" />
+                <img src={arrDwn} alt="" />
+              </button>
+
+              <NavUserMenu
+                isOpen={isMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                onViewProfile={() => {
+                  setIsMenuOpen(false);
+                  navigate("/profile");
+                }}
+                onSwitchToCreate={() => setIsMenuOpen(false)}
+                onLogout={() => {
+                  setIsMenuOpen(false);
+                  logout();
+                  navigate("/");
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
