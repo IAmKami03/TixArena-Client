@@ -4,16 +4,13 @@ import eve from "../../assets/images/vendorImages/eventimg.svg";
 import userCheck from "../../assets/images/vendorImages/User Check.svg";
 import { useAuth } from "../../contexts/AuthContext";
 
-const NAV_ITEMS = [
+const VENDOR_NAV_ITEMS = [{ label: "My Event", icon: eve, path: "/vendor" }];
+
+const ADMIN_NAV_ITEMS = [
   { label: "Dashboard", icon: dash, path: "/admin-dashboard" },
   { label: "My Event", icon: eve, path: "/vendor" },
+  { label: "Vendor Requests", icon: userCheck, path: "/vendor-requests" },
 ];
-
-const ADMIN_NAV_ITEM = {
-  label: "Vendor Requests",
-  icon: userCheck,
-  path: "/vendor-requests",
-};
 
 interface VendorPageLinksProps {
   className?: string;
@@ -23,8 +20,7 @@ interface VendorPageLinksProps {
 const VendorPageLinks = ({ className = "", onNavigate }: VendorPageLinksProps) => {
   const { pathname } = useLocation();
   const { user } = useAuth();
-  const navItems =
-    user?.role === "admin" ? [...NAV_ITEMS, ADMIN_NAV_ITEM] : NAV_ITEMS;
+  const navItems = user?.role === "admin" ? ADMIN_NAV_ITEMS : VENDOR_NAV_ITEMS;
 
   return (
     <div

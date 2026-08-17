@@ -51,12 +51,12 @@ function App() {
             <Route path="/event-details/:id" element={<EventDetails />} />
             <Route path="/create-event" element={<CreateNewEvent />} />
             <Route path="/check-in/:id" element={<CheckIn />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
           </Route>
         </Route>
 
         <Route element={<RequireRole roles={["admin"]} />}>
           <Route element={<VendorLayout />}>
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/vendor-requests" element={<VendorRequestsPage />} />
           </Route>
         </Route>

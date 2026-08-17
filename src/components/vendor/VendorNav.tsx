@@ -35,7 +35,15 @@ const VendorNav = ({ isMobileNavOpen, onToggleMobileNav }: VendorNavProps) => {
           className="flex items-center gap-1.5"
         >
           <span className="w-9 h-9 rounded-full bg-[#262525] flex items-center justify-center overflow-hidden">
-            <img src={prof} alt="" className="w-5 h-5" />
+            {user?.avatar ? (
+              <img
+                src={user.avatar}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <img src={prof} alt="" className="w-5 h-5" />
+            )}
           </span>
           <IoIosArrowDown className="text-[#ABABAB]" size={14} />
         </button>
@@ -73,7 +81,15 @@ const VendorNav = ({ isMobileNavOpen, onToggleMobileNav }: VendorNavProps) => {
                 aria-label="Account menu"
                 className="flex items-center gap-2 cursor-pointer"
               >
-                <img src={prof} alt="" />
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt=""
+                    className="w-9 h-9 rounded-full object-cover shrink-0"
+                  />
+                ) : (
+                  <img src={prof} alt="" />
+                )}
                 <img src={arrDwn} alt="" />
               </button>
 

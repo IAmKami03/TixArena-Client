@@ -78,8 +78,16 @@ const NavBar = () => {
               onClick={() => setIsMenuOpen((prev) => !prev)}
               className="flex items-center gap-1.5"
             >
-              <span className="w-8 h-8 rounded-full bg-[#262525] flex items-center justify-center">
-                <LuUser size={16} className="text-white" />
+              <span className="w-8 h-8 rounded-full bg-[#262525] flex items-center justify-center overflow-hidden">
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <LuUser size={16} className="text-white" />
+                )}
               </span>
               <IoIosArrowDown className="text-[#ABABAB]" size={14} />
             </button>
