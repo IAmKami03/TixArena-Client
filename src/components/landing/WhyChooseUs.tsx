@@ -7,7 +7,7 @@ const WhyChooseUs = () => {
     <div>
       <div className="flex justify-center mt-12 px-4 sm:px-6 lg:px-0 text-[#CECECE]">
         <div className="w-full max-w-[1020px] h-auto border-0">
-          <h2 className="text-[26px] text-start sm:text-[40px] lg:text-[60px] leading-[1.15] lg:leading-[normal] font-Instrument Serif font-normal">
+          <h2 className="text-[26px] fnt text-start sm:text-[40px] lg:text-[60px] leading-[1.15] lg:leading-[normal]  font-normal">
             Why Choose Us
           </h2>
 
@@ -17,8 +17,10 @@ const WhyChooseUs = () => {
                 <div>
                   <img src={free} alt="" />
                 </div>
-                <div>
-                  <p className="font-bold text-[15px] lg:text-lg">Register for Free</p>
+                <div className="text-start">
+                  <p className="font-bold text-[15px] lg:text-lg">
+                    Register for Free
+                  </p>
                   <p className="text-[#CECECE] text-[13px] lg:text-sm">
                     Sign up with email or Google and create events in minutes.
                   </p>
@@ -30,8 +32,10 @@ const WhyChooseUs = () => {
                 <div>
                   <img src={speaker} alt="" />
                 </div>
-                <div>
-                  <p className="font-bold text-[15px] lg:text-lg">Promote Your Event</p>
+                <div className="text-start">
+                  <p className="font-bold text-[15px] lg:text-lg">
+                    Promote Your Event
+                  </p>
                   <p className="text-[#CECECE] text-[13px] lg:text-sm">
                     Share on social media & email in a few clicks.
                   </p>
@@ -43,8 +47,10 @@ const WhyChooseUs = () => {
                 <div>
                   <img src={booking} alt="" />
                 </div>
-                <div>
-                  <p className="font-bold text-[15px] lg:text-lg">Fast Booking</p>
+                <div className="text-start">
+                  <p className="font-bold text-[15px] lg:text-lg">
+                    Fast Booking
+                  </p>
                   <p className="text-[#CECECE] text-[13px] lg:text-sm">
                     Swift payments with top-notch security.
                   </p>
@@ -64,10 +70,10 @@ const WhyChooseUs = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/100 via-black/70 to-transparent">
             <div className="relative px-6 sm:px-10 lg:px-20 mt-8 sm:mt-10 lg:mt-15 flex flex-col items-start text-white">
-              <h2 className="text-[32px] sm:text-[44px] lg:text-[60px] font-Instrument Serif font-normal">
+              <h2 className="text-[32px] sm:text-[44px] lg:text-[60px] fnt font-normal">
                 Hosting an event?
               </h2>
-              <p className="text-[#CECECE] text-sm">
+              <p className="text-[#CECECE] text-sm text-start">
                 Create, manage, and sell tickets effortlessly <br /> while
                 reaching the right audience.
               </p>

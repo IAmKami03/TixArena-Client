@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { LuImage } from "react-icons/lu";
 import arrowDown from "../../assets/images/vendorImages/arrow-down.svg";
@@ -37,6 +37,22 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
   });
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const { upload, isUploading, error: imageError } = useImageUpload();
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const categoryRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isCategoryOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        categoryRef.current &&
+        !categoryRef.current.contains(e.target as Node)
+      ) {
+        setIsCategoryOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isCategoryOpen]);
 
   const update = (patch: Partial<EventFormData>) => {
     setForm((prev) => {
@@ -102,28 +118,43 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
 
       <div className="flex flex-col gap-1.5">
         <label className={labelBase}>Category {requiredMark}</label>
-        <div className="relative flex items-center">
-          <select
-            value={form.category}
-            onChange={(e) => update({ category: e.target.value })}
-            className={`${inputBase} pr-12 appearance-none ${
+        <div className="relative" ref={categoryRef}>
+          <button
+            type="button"
+            onClick={() => setIsCategoryOpen((prev) => !prev)}
+            className={`${inputBase} pr-12 flex items-center justify-between text-left ${
               form.category ? "" : "text-[#6E6E6E]"
             }`}
           >
-            <option value="" disabled>
-              Select category
-            </option>
-            {EVENT_CATEGORIES.map((category) => (
-              <option key={category} value={category} className="text-white">
-                {category}
-              </option>
-            ))}
-          </select>
-          <img
-            src={arrowDown}
-            alt=""
-            className="absolute right-5 pointer-events-none"
-          />
+            <span>{form.category || "Select category"}</span>
+            <img
+              src={arrowDown}
+              alt=""
+              className={`absolute right-5 pointer-events-none transition-transform ${
+                isCategoryOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {isCategoryOpen && (
+            <div className="absolute z-30 top-full left-0 right-0 mt-2 bg-[#1A1A1A] border-2 border-[#262525] rounded-2xl p-1.5 shadow-2xl max-h-64 overflow-y-auto hide-scrollbar">
+              {EVENT_CATEGORIES.map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => {
+                    update({ category });
+                    setIsCategoryOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-2.5 rounded-xl text-[15px] transition-colors hover:bg-[#262525] hover:text-[#995DFF] ${
+                    category === form.category ? "text-[#995DFF]" : "text-[#ABABAB]"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

@@ -77,10 +77,10 @@ const ForgotPassword = () => {
     <AuthLayout>
       <div className="flex flex-col gap-[22px] w-full max-w-[540px]">
         <div className="flex flex-col gap-[2px]">
-          <h1 className="w-full max-w-72.5 h-auto text-[#FFFFFF] font-['Instrument_Serif'] font-normal text-[36px] sm:text-[45px] leading-[100%] tracking-[-0.02em]">
+          <h1 className="w-full max-w-72.5 h-auto text-start text-[#FFFFFF] font-['Instrument_Serif'] font-normal text-[36px] sm:text-[45px] leading-[100%] tracking-[-0.02em]">
             Reset Password
           </h1>
-          <p className="w-full h-auto text-[#CECECE] font-[Manrope] font-normal text-[16px] leading-[140%] tracking-[-0.01em]">
+          <p className="w-full h-auto text-start text-[#CECECE] font-[Manrope] font-normal text-[16px] leading-[140%] tracking-[-0.01em]">
             {step === "email"
               ? "Enter the email on your account and we'll send you a code to reset your password."
               : `Enter the code we sent to ${email} and choose a new password.`}

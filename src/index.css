@@ -1,6 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Instrument+Serif:ital@0;1&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 
+/* The whole app is dark-only — tell the browser so native form controls,
+   scrollbars, and pickers render dark by default instead of flashing light. */
+:root {
+  color-scheme: dark;
+}
+
 /* index.css or globals.css */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -35,4 +41,36 @@
 
 .animate-marquee {
   animation: marquee 15s linear infinite;
+}
+
+/* Ticket-stub card shape: rounded corners plus a semicircle "punch" cut into
+   the left/right edges, marking where the price + view-details footer
+   begins. --ticket-notch-offset controls how far up from the bottom edge
+   the notch sits — set it to match the footer's height so the cut lines up
+   with the footer's top edge. */
+.ticket-card {
+  --ticket-notch-radius: 14px;
+  --ticket-notch-offset: 64px;
+  mask-image: radial-gradient(
+      var(--ticket-notch-radius) at 0% calc(100% - var(--ticket-notch-offset)),
+      transparent 98%,
+      black 100%
+    ),
+    radial-gradient(
+      var(--ticket-notch-radius) at 100% calc(100% - var(--ticket-notch-offset)),
+      transparent 98%,
+      black 100%
+    );
+  mask-composite: intersect;
+  -webkit-mask-image: radial-gradient(
+      var(--ticket-notch-radius) at 0% calc(100% - var(--ticket-notch-offset)),
+      transparent 98%,
+      black 100%
+    ),
+    radial-gradient(
+      var(--ticket-notch-radius) at 100% calc(100% - var(--ticket-notch-offset)),
+      transparent 98%,
+      black 100%
+    );
+  -webkit-mask-composite: source-in;
 }

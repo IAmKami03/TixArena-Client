@@ -17,8 +17,8 @@ const CATEGORIES = [
 const EventCategories = () => {
   return (
     <div className="flex justify-center text-[#CECECE]">
-      <div className="w-full max-w-[1020px] h-auto px-4 sm:px-6 lg:px-0">
-        <h2 className="text-[28px] sm:text-[40px] lg:text-[60px] font-Instrument Serif font-normal leading-[1.15] lg:leading-[normal]">
+      <div className="w-full max-w-[1020px] text-start h-auto px-4 sm:px-6 lg:px-0">
+        <h2 className="text-[28px] fnt sm:text-[40px] lg:text-[76px]  font-normal leading-[1.15] lg:leading-[normal]">
           Discover Event Category.
         </h2>
         <p className="text-[#CECECE] text-[14px] sm:text-[16px] font-inter font-normal">
@@ -33,7 +33,7 @@ const EventCategories = () => {
               className="flex flex-col lg:flex-row-reverse justify-center items-center border text-center border-[#1E1E1E] bg-white/[0.02] lg:bg-transparent rounded-3xl gap-2 w-full h-auto min-h-[92px] lg:min-h-[100px] py-4 lg:py-0"
             >
               <img src={icon} alt="" className="w-8 lg:w-10" />
-              <div className="text-[16px] lg:text-[36px] font-normal text-[#FFFFFF]">
+              <div className="text-[16px] lg:text-[36px] fnt font-normal text-[#FFFFFF]">
                 {label}
               </div>
             </div>

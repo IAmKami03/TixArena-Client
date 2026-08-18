@@ -138,7 +138,7 @@ const CreateEvent = () => {
               }`}
             >
               <img src={long} alt="" />
-              <div className="flex flex-col gap-2.5 items-start text-[16px]">
+              <div className="flex flex-col gap-2.5 items-start text-start text-[16px]">
                 <p
                   className={
                     index === activeStep ? "text-[#FFFFFF]" : "text-[#7A7A7A]"

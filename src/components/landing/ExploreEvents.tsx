@@ -26,8 +26,7 @@ const ExploreEvents = () => {
     .filter((event) => {
       const categoryMatch =
         selectedCategory === "All" || event.category === selectedCategory;
-      const searchMatch =
-        !query || event.name.toLowerCase().includes(query);
+      const searchMatch = !query || event.name.toLowerCase().includes(query);
       return categoryMatch && searchMatch;
     })
     .slice(0, PREVIEW_COUNT);
@@ -35,13 +34,13 @@ const ExploreEvents = () => {
   return (
     <div className="flex justify-center px-4 sm:px-6 lg:px-0">
       <div className="w-full max-w-[1020px] text-start border-0 mt-4">
-        <h2 className="text-[22px] sm:text-[30px] lg:text-[50px] text-white font-Instrument Serif font-normal">
+        <h2 className="text-[22px] sm:text-[30px] lg:text-[50px] text-white fnt font-normal">
           Explore Events
         </h2>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
             <p className="text-[#CECECE] text-[14px] font-inter font-normal">
-              Browse events tailored to your interests, location, and <br />{" "}
+              Browse events tailored to your interests, location, and <br />
               vibe—all in one seamless experience.
             </p>
           </div>
@@ -75,7 +74,7 @@ const ExploreEvents = () => {
                 <EventCard
                   key={event._id}
                   id={event._id}
-                  tag={event.category.toLowerCase()}
+                  tag={event.category}
                   image={event.image || fallbackImage}
                   date={format(new Date(event.date), "d MMM yyyy")}
                   time={event.time ?? ""}

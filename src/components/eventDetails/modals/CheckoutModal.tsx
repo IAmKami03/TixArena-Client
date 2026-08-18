@@ -92,7 +92,7 @@ const CheckoutModal = ({
         </div>
 
         {/* Full name */}
-        <label className="text-white text-sm block mb-1 ">
+        <label className="text-white text-sm text-start block mb-1 ">
           Full Name <span className="text-red-400">*</span>
         </label>
         <input
@@ -103,7 +103,7 @@ const CheckoutModal = ({
           className="w-full rounded-[30px] border border-[#2A2A2A] py-3 px-4 bg-[#191919] mb-4 text-white placeholder-gray-500"
         />
         {/* Email */}
-        <label className="text-white text-sm block mb-1">
+        <label className="text-white text-start text-sm block mb-1">
           Email <span className="text-red-400">*</span>
         </label>
         <input
@@ -114,7 +114,9 @@ const CheckoutModal = ({
           className="w-full rounded-[30px] border border-[#2A2A2A] py-3 px-4 bg-[#191919] mb-4 text-white placeholder-gray-500"
         />
         {/* Phone */}
-        <label className="text-white text-sm block mb-1">Phone</label>
+        <label className="text-white text-start text-sm block mb-1">
+          Phone number
+        </label>
         <input
           type="tel"
           placeholder="Enter your phone number"
@@ -129,7 +131,7 @@ const CheckoutModal = ({
         <button
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="w-full rounded-[30px] border-2 py-3 px-5 text-white font-medium bg-[#995DFF] disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full rounded-[30px]  py-3 px-5 text-white font-medium bg-[#995DFF] disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {isSubmitting ? "Registering..." : "Complete Registration"}
         </button>

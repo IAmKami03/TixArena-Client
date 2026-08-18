@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import type { CSSProperties } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { LuArrowRight } from "react-icons/lu";
 
@@ -26,7 +27,8 @@ function EventCard({
   return (
     <Link
       to={`/event/${id}`}
-      className="block w-[285px] bg-[#111111] border border-[#262525] rounded-[22px] overflow-hidden"
+      className="ticket-card block w-[285px] bg-[#111111] border border-[#262525] rounded-[22px] overflow-hidden transition-colors duration-200 hover:border-[#995DFF]"
+      style={{ "--ticket-notch-offset": "74px" } as CSSProperties}
     >
       <div className="relative">
         <img
@@ -54,7 +56,7 @@ function EventCard({
         </div>
       </div>
 
-      <div className="border-t border-[#2A2A2A] px-4 py-3 flex justify-between items-end">
+      <div className="h-[74px] bg-black px-4 flex justify-between items-center">
         <div>
           <p className="text-[#8A8A8A] text-[10px]">From</p>
 

@@ -29,7 +29,7 @@ const TicketWidget = ({
       </div>
 
       <div className="w-full h-[92px] flex justify-between items-center mb-4">
-        <div>
+        <div className="flex flex-col items-start ">
           <p className="text-white font-medium">{ticketName}</p>
           <p className="text-gray-400 text-sm">Free</p>
         </div>

@@ -84,7 +84,7 @@ const SignUp = () => {
   return (
     <AuthLayout>
       <div className="flex flex-col gap-[22px] w-full max-w-[540px]">
-        <div className="flex flex-col gap-[2px]">
+        <div className="flex flex-col gap-[2px] text-start">
           <h1 className="w-full max-w-72.5 h-auto text-[#FFFFFF] font-['Instrument_Serif'] font-normal text-[36px] sm:text-[45px] leading-[100%] tracking-[-0.02em]">
             Create Your Account
           </h1>

@@ -7,8 +7,9 @@ const Hero = () => {
     <div>
       <div className="flex justify-center items-center mt-8 sm:mt-10 px-4 sm:px-6 lg:px-0">
         <div className="w-full max-w-[494px] h-auto border-0 text-center ">
-          <h1 className="text-[30px] sm:text-[42px] lg:text-[60px] leading-[1.15] lg:leading-[normal] font-normal font-Instrument Serif text-[#CECECE]">
-            Your Next Great Time Starts Here.
+          <h1 className="text-[30px] fnt  sm:text-[42px] lg:text-[76px] leading-[1.15] lg:leading-[normal] font-normal  text-[#CECECE]">
+            Your Next Great <br />
+            Time Starts Here.
           </h1>
           <p className="text-[#CECECE] text-[14px] sm:text-[16px] mt-2 lg:mt-0 max-w-[300px] sm:max-w-none mx-auto">
             Discover events that match your vibe from concerts and parties to

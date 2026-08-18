@@ -120,7 +120,7 @@ const NavBar = () => {
             </div>
 
             <Link
-              to="/signup"
+              to="/signin"
               className="bg-[#995DFF] text-[#FFFFFF] rounded-full px-4.25 py-3.5 items-center"
             >
               Get Started

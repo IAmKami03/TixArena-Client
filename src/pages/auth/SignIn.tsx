@@ -53,12 +53,12 @@ const SignIn = () => {
       <div className="flex flex-col gap-[22px] w-full max-w-[540px]">
         <div className="flex flex-col gap-[2px]">
           <h1 className="w-full max-w-72.5 h-auto text-[#FFFFFF] font-['Instrument_Serif'] font-normal text-[36px] sm:text-[45px] leading-[100%] tracking-[-0.02em]">
-            Create Your Account
+            Welcome Back
           </h1>
-          <p className="w-full h-auto text-[#CECECE] font-[Manrope] font-normal text-[16px] leading-[140%] tracking-[-0.01em]">
-            Create an account to explore events, manage your bookings, and stay
+          <p className="w-full text-start h-auto text-[#CECECE] font-[Manrope] font-normal text-[16px] leading-[140%] tracking-[-0.01em]">
+            Log in to explore events, manage your bookings, and pick up
             <br />
-            updated on what's happening next.
+            right where you left off.
           </p>
         </div>
 

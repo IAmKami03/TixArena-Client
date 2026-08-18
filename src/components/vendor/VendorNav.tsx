@@ -21,11 +21,21 @@ const VendorNav = ({ isMobileNavOpen, onToggleMobileNav }: VendorNavProps) => {
 
   return (
     <>
-      {/* Mobile/tablet: condensed bar — logo + role, avatar opens the nav drawer */}
+      {/* Mobile/tablet: condensed bar — back-to-explore, logo + role, avatar opens the nav drawer */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-[#262525] bg-[#0B0B0B]">
-        <div className="flex flex-col items-start gap-0.5">
-          <img src={logo} alt="Tix Arena" className="h-6 w-auto" />
-          <p className="text-[11px] text-[#838383] capitalize">{user?.role}</p>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate("/explore")}
+            aria-label="Back to explore"
+            className="w-8 h-8 rounded-full bg-[#262525] flex items-center justify-center shrink-0"
+          >
+            <img src={backArrow} alt="" className="w-4 h-4" />
+          </button>
+          <div className="flex flex-col items-start gap-0.5">
+            <img src={logo} alt="Tix Arena" className="h-6 w-auto" />
+            <p className="text-[11px] text-[#838383] capitalize">{user?.role}</p>
+          </div>
         </div>
         <button
           type="button"

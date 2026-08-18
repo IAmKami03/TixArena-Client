@@ -13,6 +13,7 @@ interface DatePickerFieldProps {
 }
 
 const dayPickerClassNames = {
+  root: "bg-transparent",
   months: "flex",
   month: "flex flex-col gap-3",
   month_caption: "flex items-center justify-center h-9 relative",
@@ -81,7 +82,7 @@ const DatePickerField = ({
       </button>
 
       {open && (
-        <div className="absolute z-30 top-full left-0 mt-2 bg-[#161616] border border-[#262525] rounded-2xl p-3 shadow-2xl">
+        <div className="absolute z-30 top-full left-0 mt-2 bg-[#0B0B0B] border border-[#262525] rounded-2xl p-3 shadow-2xl">
           <DayPicker
             mode="single"
             selected={value}

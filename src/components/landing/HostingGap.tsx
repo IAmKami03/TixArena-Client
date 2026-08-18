@@ -7,11 +7,11 @@ import red from "../../assets/images/landingPage/Frame 45.png";
 
 const HostingGap = () => {
   return (
-    <div className="flex justify-center mt-7 text-white px-4 sm:px-6 lg:px-0">
+    <div className="flex mb-25 justify-center mt-7 text-white px-4 sm:px-6 lg:px-0">
       <div className=" border-0 w-full max-w-[1020px]">
         <div className="mx-auto flex justify-center items-center">
           <div className="border-0 text-center">
-            <h1 className="text-[26px] sm:text-[38px] lg:text-[60px] leading-[1.15] lg:leading-[normal] font-Instrument Serif font-normal">
+            <h1 className="text-[26px] sm:text-[38px] fnt lg:text-[60px] leading-[1.15] lg:leading-[normal] font-Instrument Serif font-normal">
               Loved by Event Lovers Everywhere
             </h1>
             <p className="text-[#CECECE] text-[14px] sm:text-[16px] lg:text-[20px] font-inter font-normal mt-2 lg:mt-0">
@@ -24,7 +24,7 @@ const HostingGap = () => {
 
         {/* Desktop: original asymmetric card grid, unchanged */}
         <div className="hidden lg:flex gap-7 border-0 mt-10">
-          <div className="w-[200px]">
+          <div className="w-50">
             <div className="relative w-[200px] h-[150px] rounded-3xl overflow-hidden border border-[#1E1E1E]">
               <div
                 className="absolute inset-0 bg-center bg-cover"
