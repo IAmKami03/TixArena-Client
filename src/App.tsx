@@ -22,6 +22,9 @@ import Error404 from "./pages/Error404";
 import Event from "./pages/Event";
 import ProfilePage from "./pages/ProfilePage";
 import Explore from "./pages/Explore";
+import AboutPage from "./pages/AboutPage";
+import HelpPage from "./pages/HelpPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import RequireRole from "./components/RequireRole";
 
 function App() {
@@ -37,6 +40,9 @@ function App() {
           <Route path="/event/:id" element={<EventDetailPage />} />
           <Route path="/search-result" element={<Event />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/help" element={<HelpPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
         </Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />

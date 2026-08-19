@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import footerBg from "../assets/images/eventsImages/7bd6d90153a3b6c152303792c3b444c1ab9cf992.png";
 import logo from "../assets/images/eventsImages/Frame 21.svg";
 import whatsappIcon from "../assets/images/eventsImages/whatsapp.svg";
@@ -38,21 +39,25 @@ const Footer = () => {
           {/* Center — two link columns */}
           <div className="flex gap-12">
             <div className="space-y-3 font-manrope text-[#DCC7BC]">
-              <p className="text-sm cursor-pointer hover:text-white">Home</p>
-              <p className=" text-sm cursor-pointer hover:text-white">
+              <Link to="/" className="block text-sm hover:text-white">
+                Home
+              </Link>
+              <Link to="/explore" className="block text-sm hover:text-white">
                 Explore
-              </p>
-              <p className="text-sm cursor-pointer hover:text-white">Cinema</p>
-              <p className=" text-sm cursor-pointer hover:text-white">
+              </Link>
+              <Link to="/help" className="block text-sm hover:text-white">
                 Contacts
-              </p>
-              <p className=" text-sm cursor-pointer hover:text-white">About</p>
+              </Link>
+              <Link to="/about" className="block text-sm hover:text-white">
+                About
+              </Link>
             </div>
           </div>
 
           <div className="space-y-3 text-[14px] *:font-manrope text-[#DCC7BC]">
-            <p className="text-sm cursor-pointer hover:text-white">FAQ</p>
-            <p className="text-sm cursor-pointer hover:text-white">Delivery</p>
+            <Link to="/help" className="block text-sm hover:text-white">
+              FAQ
+            </Link>
           </div>
 
           {/* Right — button */}
@@ -64,9 +69,9 @@ const Footer = () => {
         {/* Bottom row */}
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between border-t border-[#2A2A2A] pt-6">
           <p className="text-gray-400 text-sm">© 2023 — Copyright</p>
-          <p className="text-gray-400 text-sm cursor-pointer hover:text-white">
+          <Link to="/privacy" className="text-gray-400 text-sm hover:text-white">
             Privacy
-          </p>
+          </Link>
         </div>
       </div>
     </footer>

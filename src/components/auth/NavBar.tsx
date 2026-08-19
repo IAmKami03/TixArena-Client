@@ -15,7 +15,11 @@ const NavBar = () => {
 
       <img className="h-8 sm:h-10.5 shrink-0" src={logo} alt="" />
 
-      <button className="flex items-center justify-center gap-[10px] w-[102px] h-[45px] rounded-[30px] bg-[#262525] text-[#FFFFFF] text-[16px] font-[Manrope] font-[300] tracking-[-0.03em] shrink-0">
+      <button
+        type="button"
+        onClick={() => navigate("/help")}
+        className="flex items-center justify-center gap-[10px] w-[102px] h-[45px] rounded-[30px] bg-[#262525] text-[#FFFFFF] text-[16px] font-[Manrope] font-[300] tracking-[-0.03em] shrink-0 hover:bg-[#333] transition-colors"
+      >
         <span className="flex items-center justify-center w-4 h-4 rounded-full border border-[#ABABAB] text-[#ABABAB] text-[10px] font-[300]">
           ?
         </span>

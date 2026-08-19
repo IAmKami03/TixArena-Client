@@ -115,13 +115,17 @@ const NavBar = () => {
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#262525] border-0 flex items-center justify-center">
+            <Link
+              to="/help"
+              aria-label="Help"
+              className="w-8 h-8 rounded-full bg-[#262525] border-0 flex items-center justify-center hover:bg-[#333] transition-colors"
+            >
               <CiCircleQuestion className="text-lg text-white" />
-            </div>
+            </Link>
 
             <Link
               to="/signin"
-              className="bg-[#995DFF] text-[#FFFFFF] rounded-full px-4.25 py-3.5 items-center"
+              className="bg-[#995DFF] text-[#FFFFFF] text-[16px] sm:text-[18px] rounded-full sm:px-4.25 px-3 sm:py-3.5 py-2 items-center"
             >
               Get Started
             </Link>
