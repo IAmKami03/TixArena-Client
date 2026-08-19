@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import toast from "react-hot-toast";
 import {
   getVendorRequests,
   resolveVendorRequest,
@@ -11,7 +12,6 @@ const VendorRequestsList = () => {
   const [requests, setRequests] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [actionError, setActionError] = useState("");
   const [resolvingId, setResolvingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,13 +22,13 @@ const VendorRequestsList = () => {
   }, []);
 
   const handleResolve = async (userId: string, approve: boolean) => {
-    setActionError("");
     setResolvingId(userId);
     try {
       await resolveVendorRequest(userId, approve);
       setRequests((prev) => prev.filter((u) => u._id !== userId));
+      toast.success(approve ? "Vendor request approved." : "Vendor request rejected.");
     } catch (err) {
-      setActionError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setResolvingId(null);
     }
@@ -47,10 +47,6 @@ const VendorRequestsList = () => {
           </p>
         </div>
       </div>
-
-      {actionError && (
-        <p className="text-[#FF7466] text-[14px]">{actionError}</p>
-      )}
 
       <div className="w-full rounded-[20px] bg-[#0B0B0B]">
         {isLoading ? (

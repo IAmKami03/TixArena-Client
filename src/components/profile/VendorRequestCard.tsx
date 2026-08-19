@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/AuthContext";
 import { requestVendorRole } from "../../services/userService";
 import { getErrorMessage } from "../../lib/api";
@@ -6,19 +7,18 @@ import { getErrorMessage } from "../../lib/api";
 const VendorRequestCard = () => {
   const { user, login } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
 
   if (!user || user.role !== "user") return null;
 
   const handleRequest = async () => {
-    setError("");
     setIsSubmitting(true);
     try {
       const updatedUser = await requestVendorRole();
       const token = localStorage.getItem("tix_token");
       if (token) login(updatedUser, token);
+      toast.success("Request sent — we'll email you once an admin responds.");
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -37,7 +37,6 @@ const VendorRequestCard = () => {
               ? "Your last request was declined. You can request again."
               : "Request creator access to start creating and managing your own events."}
         </p>
-        {error && <p className="text-[#FF7466] text-sm mt-2">{error}</p>}
       </div>
 
       {user.vendorRequestStatus !== "Pending" && (

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
+import toast from "react-hot-toast";
 import { LuUser, LuX, LuCheck } from "react-icons/lu";
 import camera from "../../assets/images/vendorImages/Camera.svg";
 import { uploadImage } from "../../services/uploadService";
@@ -12,22 +13,30 @@ export interface SpeakerEntry {
   isHeadliner: boolean;
 }
 
+export interface LineUpsFormErrors {
+  [id: number]: string | undefined;
+}
+
 interface LineUpsFormProps {
   onChange?: (speakers: SpeakerEntry[]) => void;
   onUploadingChange?: (isUploading: boolean) => void;
+  errors?: LineUpsFormErrors;
 }
 
 let idCounter = 0;
 const nextId = () => ++idCounter;
 
-const LineUpsForm = ({ onChange, onUploadingChange }: LineUpsFormProps) => {
+const LineUpsForm = ({
+  onChange,
+  onUploadingChange,
+  errors = {},
+}: LineUpsFormProps) => {
   const [speakers, setSpeakers] = useState<SpeakerEntry[]>([
     { id: nextId(), name: "Sam Smith", photo: null, isHeadliner: true },
     { id: nextId(), name: "", photo: null, isHeadliner: false },
   ]);
   const [previews, setPreviews] = useState<Record<number, string>>({});
   const [uploadingIds, setUploadingIds] = useState<Set<number>>(new Set());
-  const [photoError, setPhotoError] = useState("");
 
   const emit = (next: SpeakerEntry[]) => {
     setSpeakers(next);
@@ -49,13 +58,12 @@ const LineUpsForm = ({ onChange, onUploadingChange }: LineUpsFormProps) => {
       onUploadingChange?.(next.size > 0);
       return next;
     });
-    setPhotoError("");
 
     try {
       const url = await uploadImage(file);
       emit(speakers.map((s) => (s.id === id ? { ...s, photo: url } : s)));
     } catch (err) {
-      setPhotoError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setPreviews((prev) => {
         const next = { ...prev };
@@ -146,7 +154,9 @@ const LineUpsForm = ({ onChange, onUploadingChange }: LineUpsFormProps) => {
                 value={speaker.name}
                 onChange={(e) => handleName(speaker.id, e.target.value)}
                 placeholder="Enter Name"
-                className="bg-transparent text-[#ECECEC] text-[15px] placeholder:text-[#7A7A7A] outline-none flex-1"
+                className={`bg-transparent text-[#ECECEC] text-[15px] placeholder:text-[#7A7A7A] outline-none flex-1 ${
+                  errors[speaker.id] ? "text-[#FF7466]" : ""
+                }`}
               />
 
               <button
@@ -168,13 +178,14 @@ const LineUpsForm = ({ onChange, onUploadingChange }: LineUpsFormProps) => {
                 </span>
               </button>
             </div>
+            {errors[speaker.id] && (
+              <p className="text-[#FF7466] text-[13px] px-1">
+                {errors[speaker.id]}
+              </p>
+            )}
           </div>
         );
       })}
-
-      {photoError && (
-        <p className="text-[#FF7466] text-[14px]">{photoError}</p>
-      )}
 
       <button
         type="button"

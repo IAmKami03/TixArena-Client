@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import toast from "react-hot-toast";
 import { LuArrowRight } from "react-icons/lu";
 import long from "../../assets/images/vendorImages/longdots.svg";
 import arrowLeft from "../../assets/images/vendorImages/arrow-left.svg";
 import fallbackImage from "../../assets/images/vendorImages/social.svg";
 import fallbackSpeakerPhoto from "../../assets/images/vendorImages/idris.svg";
 import EventForm from "./EventForm";
-import type { EventFormData } from "./EventForm";
+import type { EventFormData, EventFormErrors } from "./EventForm";
 import TicketForm from "./TicketForm";
-import type { TicketEntry } from "./TicketForm";
+import type { TicketEntry, TicketFormErrors } from "./TicketForm";
 import LineUpsForm from "./LineUpsForm";
-import type { SpeakerEntry } from "./LineUpsForm";
+import type { SpeakerEntry, LineUpsFormErrors } from "./LineUpsForm";
 import EventListedModal from "./EventListedModal";
 import { createEvent } from "../../services/eventService";
 import { getErrorMessage } from "../../lib/api";
@@ -49,7 +50,9 @@ const CreateEvent = () => {
   const [tickets, setTickets] = useState<TicketEntry[]>([]);
   const [speakers, setSpeakers] = useState<SpeakerEntry[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [eventErrors, setEventErrors] = useState<EventFormErrors>({});
+  const [ticketErrors, setTicketErrors] = useState<TicketFormErrors>({});
+  const [lineupErrors, setLineupErrors] = useState<LineUpsFormErrors>({});
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [isSpeakerPhotoUploading, setIsSpeakerPhotoUploading] = useState(false);
   const isUploading = isImageUploading || isSpeakerPhotoUploading;
@@ -61,14 +64,71 @@ const CreateEvent = () => {
     setActiveStep((prev) => Math.max(prev - 1, 0));
   };
 
+  const validateEventStep = (): boolean => {
+    const errors: EventFormErrors = {};
+    if (!eventData.name.trim()) errors.name = "Event name is required.";
+    if (!eventData.overview.trim()) errors.overview = "Overview is required.";
+    if (!eventData.location.trim()) errors.location = "Location is required.";
+    if (!eventData.category) errors.category = "Please select a category.";
+    if (!eventData.date) errors.date = "Please pick a date.";
+    setEventErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateTicketStep = (): boolean => {
+    const errors: TicketFormErrors = {};
+    const named = tickets.filter((t) => t.name.trim());
+    if (named.length === 0) {
+      toast.error("Add at least one ticket type.");
+      return false;
+    }
+    for (const t of tickets) {
+      const rowErrors: { name?: string; quantity?: string } = {};
+      const hasName = t.name.trim().length > 0;
+      const hasQuantity = t.quantity > 0;
+      if (hasName && !hasQuantity) {
+        rowErrors.quantity = "Enter how many of this ticket are available.";
+      }
+      if (!hasName && hasQuantity) {
+        rowErrors.name = "This ticket needs a name.";
+      }
+      if (Object.keys(rowErrors).length > 0) errors[t.id] = rowErrors;
+    }
+    setTicketErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateLineupStep = (): boolean => {
+    const errors: LineUpsFormErrors = {};
+    for (const s of speakers) {
+      if (s.photo && !s.name.trim()) {
+        errors[s.id] = "This speaker needs a name.";
+      }
+    }
+    setLineupErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateStep = (step: number): boolean => {
+    if (step === 0) return validateEventStep();
+    if (step === 1) return validateTicketStep();
+    return validateLineupStep();
+  };
+
   const handleComplete = async () => {
-    if (!eventData.category) {
-      setError("Please select a category for your event.");
+    if (!validateEventStep()) {
       setActiveStep(0);
       return;
     }
+    if (!validateTicketStep()) {
+      setActiveStep(1);
+      return;
+    }
+    if (!validateLineupStep()) {
+      setActiveStep(2);
+      return;
+    }
 
-    setError("");
     setIsSubmitting(true);
     try {
       const now = new Date();
@@ -99,13 +159,14 @@ const CreateEvent = () => {
 
       setIsSuccessOpen(true);
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleNext = () => {
+    if (!validateStep(activeStep)) return;
     if (isLastStep) {
       handleComplete();
       return;
@@ -151,29 +212,29 @@ const CreateEvent = () => {
             </div>
           ))}
         </div>
-        {/* FORMS */}
+        {/* FORMS — all three stay mounted for the whole wizard lifetime so
+            navigating between steps never resets what the user already
+            entered; only visibility toggles per step. */}
         <div className="flex-1">
-          {activeStep === 0 && (
+          <div className={activeStep === 0 ? "" : "hidden"}>
             <EventForm
               onChange={setEventData}
               onUploadingChange={setIsImageUploading}
+              errors={eventErrors}
             />
-          )}
-          {activeStep === 1 && <TicketForm onChange={setTickets} />}
-          {activeStep === 2 && (
+          </div>
+          <div className={activeStep === 1 ? "" : "hidden"}>
+            <TicketForm onChange={setTickets} errors={ticketErrors} />
+          </div>
+          <div className={activeStep === 2 ? "" : "hidden"}>
             <LineUpsForm
               onChange={setSpeakers}
               onUploadingChange={setIsSpeakerPhotoUploading}
+              errors={lineupErrors}
             />
-          )}
+          </div>
         </div>
       </div>
-
-      {error && (
-        <p className="w-full text-center text-[#FF7466] text-[14px]">
-          {error}
-        </p>
-      )}
 
       <div className="w-full flex items-center justify-between p-6">
         <button

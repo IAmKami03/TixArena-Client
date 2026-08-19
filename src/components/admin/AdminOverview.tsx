@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { LuHeart, LuLayoutGrid, LuUser } from "react-icons/lu";
 import add from "../../assets/images/vendorImages/Add.svg";
@@ -78,7 +79,6 @@ const AdminOverview = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
-  const [actionError, setActionError] = useState("");
   const [statusFilter, setStatusFilter] = useState<"All" | EventStatus>("All");
   const [genderStats, setGenderStats] = useState({ female: 0, male: 0 });
   const selectedEvent = events.find((event) => event._id === selectedEventId);
@@ -132,9 +132,11 @@ const AdminOverview = () => {
         prev.map((event) => (event._id === updated._id ? updated : event)),
       );
       setSelectedEventId(null);
-      setActionError("");
+      toast.success(
+        status === "Approved" ? "Event approved." : "Event rejected.",
+      );
     } catch (err) {
-      setActionError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     }
   };
 
@@ -307,10 +309,6 @@ const AdminOverview = () => {
             onChange={(value) => setStatusFilter(value as "All" | EventStatus)}
           />
         </div>
-
-        {actionError && (
-          <p className="text-[#FF7466] text-[14px]">{actionError}</p>
-        )}
 
         <div className="w-full overflow-x-auto scrollbar-none rounded-[20px] bg-[#0B0B0B]">
           {isLoading ? (

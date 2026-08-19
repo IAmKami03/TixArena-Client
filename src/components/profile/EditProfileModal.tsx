@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { LuX, LuCamera } from "react-icons/lu";
 import { useAuth } from "../../contexts/AuthContext";
 import * as authService from "../../services/authService";
 import { uploadImage } from "../../services/uploadService";
 import { getErrorMessage } from "../../lib/api";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface EditProfileModalProps {
   onClose: () => void;
@@ -29,7 +32,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   const [interests, setInterests] = useState<string[]>(initialInterests);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: string;
+    email?: string;
+  }>({});
 
   const removeInterest = (tag: string) => {
     setInterests((prev) => prev.filter((t) => t !== tag));
@@ -45,20 +51,28 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setError("");
     setIsUploadingAvatar(true);
     try {
       const url = await uploadImage(file);
       setAvatar(url);
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setIsUploadingAvatar(false);
     }
   };
 
   const handleSave = async () => {
-    setError("");
+    const errors: typeof fieldErrors = {};
+    if (!name.trim()) errors.name = "Name is required.";
+    if (!email.trim()) {
+      errors.email = "Email is required.";
+    } else if (!EMAIL_RE.test(email.trim())) {
+      errors.email = "Enter a valid email address.";
+    }
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     setIsSaving(true);
     try {
       const trimmedName = name.trim();
@@ -73,9 +87,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
         interests,
       });
       updateUser(updatedUser);
+      toast.success("Profile updated.");
       onClose();
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }
@@ -127,20 +142,38 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
         <input
           type="text"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => {
+            setName(e.target.value);
+            if (fieldErrors.name)
+              setFieldErrors((prev) => ({ ...prev, name: undefined }));
+          }}
           placeholder="John Doe"
-          className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 mb-4 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className={`w-full rounded-xl bg-white/5 border px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-400 ${
+            fieldErrors.name ? "border-red-400 mb-1" : "border-white/10 mb-4"
+          }`}
         />
+        {fieldErrors.name && (
+          <p className="text-red-400 text-xs mb-3">{fieldErrors.name}</p>
+        )}
 
         {/* Email */}
         <label className="block text-xs text-slate-400 mb-1.5">Email</label>
         <input
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (fieldErrors.email)
+              setFieldErrors((prev) => ({ ...prev, email: undefined }));
+          }}
           placeholder="you@example.com"
-          className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 mb-4 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className={`w-full rounded-xl bg-white/5 border px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-400 ${
+            fieldErrors.email ? "border-red-400 mb-1" : "border-white/10 mb-4"
+          }`}
         />
+        {fieldErrors.email && (
+          <p className="text-red-400 text-xs mb-3">{fieldErrors.email}</p>
+        )}
 
         {/* Interests */}
         <label className="block text-xs text-slate-400 mb-1.5">Interest</label>
@@ -176,8 +209,6 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
             </>
           )}
         </div>
-
-        {error && <p className="text-red-400 text-xs mb-3">{error}</p>}
 
         {/* Save button */}
         <button

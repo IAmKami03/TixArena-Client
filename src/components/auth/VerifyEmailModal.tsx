@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { IoLockClosedOutline } from "react-icons/io5";
 import verificationBg from "../../assets/images/authImages/verificationBg.png";
 import * as authService from "../../services/authService";
@@ -17,37 +18,34 @@ const VerifyEmailModal = ({
   onClose,
 }: VerifyEmailModalProps) => {
   const [code, setCode] = useState("");
-  const [error, setError] = useState("");
+  const [codeError, setCodeError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResending, setIsResending] = useState(false);
-  const [resendMessage, setResendMessage] = useState("");
 
   const handleSubmit = async () => {
     if (code.length !== 4) {
-      setError("Enter the 4 digit code.");
+      setCodeError("Enter the 4 digit code.");
       return;
     }
-    setError("");
+    setCodeError("");
     setIsSubmitting(true);
     try {
       const { user, token } = await authService.verifyEmail(email, code);
       onSuccess(user, token);
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleResend = async () => {
-    setError("");
-    setResendMessage("");
     setIsResending(true);
     try {
       await authService.resendCode(email);
-      setResendMessage("A new code has been sent.");
+      toast.success("A new code has been sent.");
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setIsResending(false);
     }
@@ -82,7 +80,11 @@ const VerifyEmailModal = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-between w-full h-[62px] rounded-[30px] border-2 border-[#262525] bg-[#191919] px-4.5 py-5">
+        <div
+          className={`flex items-center justify-between w-full h-[62px] rounded-[30px] border-2 bg-[#191919] px-4.5 py-5 ${
+            codeError ? "border-[#FF7466]" : "border-[#262525]"
+          }`}
+        >
           <div className="flex items-center gap-[12px]">
             <IoLockClosedOutline size={24} className="text-[#838383]" />
             <input
@@ -90,7 +92,10 @@ const VerifyEmailModal = ({
               maxLength={4}
               placeholder="Enter 4 digit code"
               value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+              onChange={(e) => {
+                setCode(e.target.value.replace(/\D/g, ""));
+                if (codeError) setCodeError("");
+              }}
               className="bg-transparent outline-none font-[Manrope] font-medium text-[16px] tracking-[-0.01em]"
               style={{ color: "#ABABAB" }}
             />
@@ -103,14 +108,9 @@ const VerifyEmailModal = ({
           </span>
         </div>
 
-        {error && (
+        {codeError && (
           <p className="text-[#FF7466] font-[Manrope] text-[14px] -mt-[10px]">
-            {error}
-          </p>
-        )}
-        {resendMessage && !error && (
-          <p className="text-[#5FD787] font-[Manrope] text-[14px] -mt-[10px]">
-            {resendMessage}
+            {codeError}
           </p>
         )}
 

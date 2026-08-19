@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
+import toast from "react-hot-toast";
 import { LuQrCode, LuCamera, LuChevronDown, LuChevronUp } from "react-icons/lu";
 import searchIcon from "../../assets/images/search-01.svg";
 import nochechIn from "../../assets/images/vendorImages/Ticket-checkin.svg";
@@ -92,8 +93,6 @@ const CheckInAttendants = () => {
   const [attendees, setAttendees] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
-  const [checkInError, setCheckInError] = useState("");
-  const [checkInMessage, setCheckInMessage] = useState("");
   const [isCheckingIn, setIsCheckingIn] = useState(false);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
 
@@ -137,23 +136,28 @@ const CheckInAttendants = () => {
       return { ok: false, message: "" };
     }
 
-    setCheckInError("");
-    setCheckInMessage("");
     setIsCheckingIn(true);
     try {
       const booking = await checkInByCode(eventId, codeToSubmit);
       const message = `${booking.fullName} checked in successfully.`;
-      setCheckInMessage(message);
       setCode("");
       loadAttendees();
       return { ok: true, message };
     } catch (err) {
-      const message = getErrorMessage(err);
-      setCheckInError(message);
-      return { ok: false, message };
+      return { ok: false, message: getErrorMessage(err) };
     } finally {
       setIsCheckingIn(false);
     }
+  };
+
+  // Manual code-entry path only — the camera-scan path (QrCameraScanner)
+  // already shows its own in-modal confirmation from the same result, so
+  // toasting there too would double up the feedback.
+  const handleManualCheckIn = async () => {
+    const result = await handleCheckIn();
+    if (!result.message) return;
+    if (result.ok) toast.success(result.message);
+    else toast.error(result.message);
   };
 
   const lookupBookingByCode = (rawCode: string): Booking | undefined =>
@@ -240,16 +244,9 @@ const CheckInAttendants = () => {
           />
         </div>
 
-        {checkInError && (
-          <p className="text-[#FF7466] text-[14px]">{checkInError}</p>
-        )}
-        {checkInMessage && (
-          <p className="text-[#5FD787] text-[14px]">{checkInMessage}</p>
-        )}
-
         <button
           type="button"
-          onClick={() => handleCheckIn()}
+          onClick={handleManualCheckIn}
           disabled={isCheckingIn || !code.trim()}
           className="w-full bg-[#995DFF] hover:bg-[#8a4ff0] text-white text-[16px] font-medium py-3.5 rounded-full transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >

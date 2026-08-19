@@ -22,6 +22,7 @@ const EventDetailPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [ticketCount, setTicketCount] = useState<number>(1);
+  const [selectedTicketName, setSelectedTicketName] = useState<string>();
   const [showCheckout, setShowCheckout] = useState<boolean>(false);
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [booking, setBooking] = useState<Booking | undefined>();
@@ -32,7 +33,15 @@ const EventDetailPage = () => {
   useEffect(() => {
     if (!id) return;
     getPublicEvent(id)
-      .then(setEvent)
+      .then((fetched) => {
+        setEvent(fetched);
+        // Default to the first ticket tier that still has availability,
+        // falling back to the first tier if every tier is sold out.
+        const firstAvailable = fetched.tickets.find(
+          (t) => t.quantity - t.sold > 0,
+        );
+        setSelectedTicketName((firstAvailable ?? fetched.tickets[0])?.name);
+      })
       .catch((err) => setError(getErrorMessage(err)));
   }, [id]);
 
@@ -84,7 +93,12 @@ const EventDetailPage = () => {
             ticketCount={ticketCount}
             setTicketCount={setTicketCount}
             onRegister={handleRegister}
-            ticketName={event?.tickets[0]?.name}
+            tickets={event?.tickets}
+            selectedTicketName={selectedTicketName}
+            onSelectTicket={(name) => {
+              setSelectedTicketName(name);
+              setTicketCount(1);
+            }}
           />
         </div>
 
@@ -117,12 +131,12 @@ const EventDetailPage = () => {
       </div>
 
       {/* Modals */}
-      {showCheckout && event && (
+      {showCheckout && event && selectedTicketName && (
         <CheckoutModal
           isOpen={showCheckout}
           ticketCount={ticketCount}
           eventId={event._id}
-          ticketName={event.tickets[0]?.name ?? "Regular"}
+          ticketName={selectedTicketName}
           onClose={() => setShowCheckout(false)}
           onSuccess={(newBooking) => {
             setShowCheckout(false);

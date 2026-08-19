@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
+import toast from "react-hot-toast";
 import { LuCheck } from "react-icons/lu";
 import DatePickerField from "./DatePickerField";
 import camera from "../../assets/images/vendorImages/Camera.svg";
@@ -99,14 +100,28 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
   const [uploadingSpeakerIds, setUploadingSpeakerIds] = useState<Set<number>>(
     new Set(),
   );
-  const [imageError, setImageError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: string;
+    overview?: string;
+    location?: string;
+    date?: string;
+  }>({});
+  const [ticketErrors, setTicketErrors] = useState<
+    Record<number, { name?: string; quantity?: string }>
+  >({});
 
   useEffect(() => {
     if (!isOpen) return;
     const initial = toFormState(sourceEvent);
+    // Resetting the modal's local form state to match whichever event it
+    // was opened for, each time it (re)opens.
+    /* eslint-disable react-hooks/set-state-in-effect */
     setEvent(initial.event);
     setTickets(initial.tickets);
     setSpeakers(initial.speakers);
+    setFieldErrors({});
+    setTicketErrors({});
+    /* eslint-enable react-hooks/set-state-in-effect */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, sourceEvent._id]);
 
@@ -121,12 +136,11 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
 
     setEventImagePreview(URL.createObjectURL(file));
     setIsEventImageUploading(true);
-    setImageError("");
     try {
       const url = await uploadImage(file);
       setEvent((prev) => ({ ...prev, image: url }));
     } catch (err) {
-      setImageError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setEventImagePreview(null);
       setIsEventImageUploading(false);
@@ -178,7 +192,6 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
 
     setSpeakerPreviews((prev) => ({ ...prev, [id]: URL.createObjectURL(file) }));
     setUploadingSpeakerIds((prev) => new Set(prev).add(id));
-    setImageError("");
 
     try {
       const url = await uploadImage(file);
@@ -186,7 +199,7 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
         prev.map((s) => (s.id === id ? { ...s, photo: url } : s)),
       );
     } catch (err) {
-      setImageError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setSpeakerPreviews((prev) => {
         const next = { ...prev };
@@ -217,6 +230,32 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
   };
 
   const handleSave = () => {
+    const errors: typeof fieldErrors = {};
+    if (!event.name.trim()) errors.name = "Event name is required.";
+    if (!event.overview.trim()) errors.overview = "Overview is required.";
+    if (!event.location.trim()) errors.location = "Location is required.";
+    if (!event.date) errors.date = "Please pick a date.";
+    setFieldErrors(errors);
+
+    const rowErrors: typeof ticketErrors = {};
+    for (const t of tickets) {
+      const hasName = t.name.trim().length > 0;
+      const hasQuantity = t.quantity > 0;
+      const row: { name?: string; quantity?: string } = {};
+      if (hasName && !hasQuantity) {
+        row.quantity = "Enter how many of this ticket are available.";
+      }
+      if (!hasName && hasQuantity) {
+        row.name = "This ticket needs a name.";
+      }
+      if (Object.keys(row).length > 0) rowErrors[t.id] = row;
+    }
+    setTicketErrors(rowErrors);
+
+    if (Object.keys(errors).length > 0 || Object.keys(rowErrors).length > 0) {
+      return;
+    }
+
     onSave?.({
       name: event.name,
       overview: event.overview,
@@ -268,25 +307,30 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
               onChange={(e) =>
                 setEvent((prev) => ({ ...prev, name: e.target.value }))
               }
-              className={inputBase}
+              className={`${inputBase} ${fieldErrors.name ? "border-[#FF7466]" : ""}`}
             />
+            {fieldErrors.name && (
+              <p className="text-[#FF7466] text-[13px]">{fieldErrors.name}</p>
+            )}
           </div>
 
           <div className="flex flex-col items-start gap-1.5">
-            <label className={labelBase}>
-              Overview{" "}
-              <label className={labelBase}>
-                Ticket Quantity <span className="text-[#FF7466]">*</span>
-              </label>
-            </label>
+            <label className={labelBase}>Overview</label>
             <textarea
               value={event.overview}
               onChange={(e) =>
                 setEvent((prev) => ({ ...prev, overview: e.target.value }))
               }
               rows={5}
-              className={`${inputBase} h-auto py-3 resize-none leading-relaxed hide-scrollbar`}
+              className={`${inputBase} h-auto py-3 resize-none leading-relaxed hide-scrollbar ${
+                fieldErrors.overview ? "border-[#FF7466]" : ""
+              }`}
             />
+            {fieldErrors.overview && (
+              <p className="text-[#FF7466] text-[13px]">
+                {fieldErrors.overview}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -298,8 +342,13 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
               onChange={(e) =>
                 setEvent((prev) => ({ ...prev, location: e.target.value }))
               }
-              className={inputBase}
+              className={`${inputBase} ${fieldErrors.location ? "border-[#FF7466]" : ""}`}
             />
+            {fieldErrors.location && (
+              <p className="text-[#FF7466] text-[13px]">
+                {fieldErrors.location}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -313,7 +362,7 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
                   setEvent((prev) => ({ ...prev, date: date ?? null }))
                 }
                 placeholder="Select date"
-                className={`${inputBase} flex-1`}
+                className={`${inputBase} flex-1 ${fieldErrors.date ? "border-[#FF7466]" : ""}`}
               />
               <input
                 value={event.time}
@@ -324,12 +373,13 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
                 className={`${inputBase} w-44`}
               />
             </div>
+            {fieldErrors.date && (
+              <p className="text-[#FF7466] text-[13px]">{fieldErrors.date}</p>
+            )}
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className={labelBase}>
-              Image <span className="text-[#FF7466]">*</span>
-            </label>
+            <label className={labelBase}>Image</label>
             <label className="flex items-center gap-2.5 cursor-pointer w-fit">
               <span className="w-9 h-9 rounded-full bg-[#262525] overflow-hidden flex items-center justify-center">
                 {eventImagePreview || event.image ? (
@@ -354,9 +404,6 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
                 className="hidden"
               />
             </label>
-            {imageError && (
-              <p className="text-[#FF7466] text-[14px]">{imageError}</p>
-            )}
           </div>
         </div>
 
@@ -383,14 +430,27 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
                     handleTicketChange(ticket.id, "name", e.target.value)
                   }
                   placeholder="e.g. Regular"
-                  className={inputBase}
+                  className={`${inputBase} ${
+                    ticketErrors[ticket.id]?.name ? "border-[#FF7466]" : ""
+                  }`}
                 />
+                {ticketErrors[ticket.id]?.name && (
+                  <p className="text-[#FF7466] text-[13px]">
+                    {ticketErrors[ticket.id]?.name}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className={labelBase}>
                   Ticket Quantity <span className="text-[#FF7466]">*</span>
                 </label>
-                <div className="w-full h-13 bg-[#1A1A1A] rounded-xl px-2 flex items-center justify-between">
+                <div
+                  className={`w-full h-13 bg-[#1A1A1A] rounded-xl px-2 flex items-center justify-between border-2 ${
+                    ticketErrors[ticket.id]?.quantity
+                      ? "border-[#FF7466]"
+                      : "border-transparent"
+                  }`}
+                >
                   <button
                     type="button"
                     onClick={() => adjustQuantity(ticket.id, -1)}
@@ -413,6 +473,11 @@ const EditModal = ({ isOpen, event: sourceEvent, onClose, onSave }: EditModalPro
                     +
                   </button>
                 </div>
+                {ticketErrors[ticket.id]?.quantity && (
+                  <p className="text-[#FF7466] text-[13px]">
+                    {ticketErrors[ticket.id]?.quantity}
+                  </p>
+                )}
               </div>
             </div>
           ))}

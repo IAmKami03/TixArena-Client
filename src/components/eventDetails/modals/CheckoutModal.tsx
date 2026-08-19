@@ -1,9 +1,12 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import cancleIcon from "../../../assets/images/eventsImages/name.svg";
 import { createBooking } from "../../../services/bookingService";
 import { getErrorMessage } from "../../../lib/api";
 import { useAuth } from "../../../contexts/AuthContext";
 import type { Booking } from "../../../types/booking";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface CheckOutModalProps {
   isOpen: boolean;
@@ -29,14 +32,24 @@ const CheckoutModal = ({
   const [email, setEmail] = useState(user?.email ?? "");
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{
+    fullName?: string;
+    email?: string;
+  }>({});
 
   if (!isOpen) return null;
 
   const handleSubmit = async () => {
-    if (!fullName || !email) return;
+    const errors: typeof fieldErrors = {};
+    if (!fullName.trim()) errors.fullName = "Full name is required.";
+    if (!email.trim()) {
+      errors.email = "Email is required.";
+    } else if (!EMAIL_RE.test(email.trim())) {
+      errors.email = "Enter a valid email address.";
+    }
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
-    setError("");
     setIsSubmitting(true);
     try {
       const booking = await createBooking({
@@ -49,7 +62,7 @@ const CheckoutModal = ({
       });
       onSuccess(booking);
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -99,9 +112,18 @@ const CheckoutModal = ({
           type="text"
           placeholder="John Doe"
           value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          className="w-full rounded-[30px] border border-[#2A2A2A] py-3 px-4 bg-[#191919] mb-4 text-white placeholder-gray-500"
+          onChange={(e) => {
+            setFullName(e.target.value);
+            if (fieldErrors.fullName)
+              setFieldErrors((prev) => ({ ...prev, fullName: undefined }));
+          }}
+          className={`w-full rounded-[30px] border py-3 px-4 bg-[#191919] text-white placeholder-gray-500 ${
+            fieldErrors.fullName ? "border-[#FF7466] mb-1" : "border-[#2A2A2A] mb-4"
+          }`}
         />
+        {fieldErrors.fullName && (
+          <p className="mb-4 text-sm text-[#FF7466]">{fieldErrors.fullName}</p>
+        )}
         {/* Email */}
         <label className="text-white text-start text-sm block mb-1">
           Email <span className="text-red-400">*</span>
@@ -110,9 +132,18 @@ const CheckoutModal = ({
           type="email"
           placeholder="you@example.com"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-[30px] border border-[#2A2A2A] py-3 px-4 bg-[#191919] mb-4 text-white placeholder-gray-500"
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (fieldErrors.email)
+              setFieldErrors((prev) => ({ ...prev, email: undefined }));
+          }}
+          className={`w-full rounded-[30px] border py-3 px-4 bg-[#191919] text-white placeholder-gray-500 ${
+            fieldErrors.email ? "border-[#FF7466] mb-1" : "border-[#2A2A2A] mb-4"
+          }`}
         />
+        {fieldErrors.email && (
+          <p className="mb-4 text-sm text-[#FF7466]">{fieldErrors.email}</p>
+        )}
         {/* Phone */}
         <label className="text-white text-start text-sm block mb-1">
           Phone number
@@ -124,8 +155,6 @@ const CheckoutModal = ({
           onChange={(e) => setPhone(e.target.value)}
           className="w-full rounded-[30px] border border-[#2A2A2A] py-3 px-4 bg-[#191919] mb-4 text-white placeholder-gray-500"
         />
-
-        {error && <p className="mb-4 text-sm text-[#FF7466]">{error}</p>}
 
         {/* button */}
         <button

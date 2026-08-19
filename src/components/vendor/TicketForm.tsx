@@ -6,8 +6,13 @@ export interface TicketEntry {
   quantity: number;
 }
 
+export interface TicketFormErrors {
+  [id: number]: { name?: string; quantity?: string };
+}
+
 interface TicketFormProps {
   onChange?: (tickets: TicketEntry[]) => void;
+  errors?: TicketFormErrors;
 }
 
 const inputBase =
@@ -18,7 +23,7 @@ const requiredMark = <span className="text-[#FF7466]">*</span>;
 let idCounter = 0;
 const nextId = () => ++idCounter;
 
-const TicketForm = ({ onChange }: TicketFormProps) => {
+const TicketForm = ({ onChange, errors = {} }: TicketFormProps) => {
   const [tickets, setTickets] = useState<TicketEntry[]>([
     { id: nextId(), name: "", quantity: 0 },
     { id: nextId(), name: "", quantity: 0 },
@@ -67,8 +72,15 @@ const TicketForm = ({ onChange }: TicketFormProps) => {
               value={ticket.name}
               onChange={(e) => handleName(ticket.id, e.target.value)}
               placeholder="Enter ticket name"
-              className={inputBase}
+              className={`${inputBase} ${
+                errors[ticket.id]?.name ? "border-[#FF7466]" : ""
+              }`}
             />
+            {errors[ticket.id]?.name && (
+              <p className="text-[#FF7466] text-[13px]">
+                {errors[ticket.id]?.name}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -78,7 +90,9 @@ const TicketForm = ({ onChange }: TicketFormProps) => {
                 value={ticket.quantity || ""}
                 onChange={(e) => handleQuantity(ticket.id, e.target.value)}
                 placeholder="Enter quantity"
-                className={`${inputBase} pr-24`}
+                className={`${inputBase} pr-24 ${
+                  errors[ticket.id]?.quantity ? "border-[#FF7466]" : ""
+                }`}
               />
               <div className="absolute right-2 flex items-center gap-2">
                 <button
@@ -99,6 +113,11 @@ const TicketForm = ({ onChange }: TicketFormProps) => {
                 </button>
               </div>
             </div>
+            {errors[ticket.id]?.quantity && (
+              <p className="text-[#FF7466] text-[13px]">
+                {errors[ticket.id]?.quantity}
+              </p>
+            )}
           </div>
         </div>
       ))}

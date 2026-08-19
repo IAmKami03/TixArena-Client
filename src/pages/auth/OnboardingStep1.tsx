@@ -17,7 +17,7 @@ const OnboardingStep1 = () => {
     <AuthLayout>
       <div className="w-full max-w-[540px] flex flex-col gap-[25px]">
         <div className="relative pr-14 sm:pr-0">
-          <div className="flex flex-col gap-[8px]">
+          <div className="flex flex-col gap-[8px] text-start">
             <h1 className="text-[#FFFFFF] font-['Instrument_Serif'] font-normal text-[36px] sm:text-[45px] leading-[100%] tracking-[-0.02em]">
               You're Almost There
             </h1>
@@ -57,7 +57,7 @@ const OnboardingStep1 = () => {
             alt=""
             className="w-[57px] h-[47px] shrink-0"
           />
-          <div className="flex flex-col items-start gap-[4px]">
+          <div className="flex flex-col items-start gap-[4px] text-start">
             <h4 className="text-[#FFFFFF] font-['Instrument_Serif'] font-normal text-[23px] leading-[100%] tracking-[-0.01em]">
               Event Lover
             </h4>
@@ -84,7 +84,7 @@ const OnboardingStep1 = () => {
             alt=""
             className="w-[56px] h-[57px] shrink-0"
           />
-          <div className="flex flex-col items-start gap-[4px]">
+          <div className="flex flex-col items-start gap-[4px] text-start">
             <h4 className="text-[#FFFFFF] font-['Instrument_Serif'] font-normal text-[23px] leading-[100%] tracking-[-0.01em]">
               Create Event
             </h4>

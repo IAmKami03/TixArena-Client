@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import AuthLayout from "../../layouts/AuthLayout";
 import { useAuth } from "../../contexts/AuthContext";
 import * as authService from "../../services/authService";
@@ -25,7 +26,6 @@ const OnboardingStep2 = () => {
   const [gender, setGender] = useState<string | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
 
   const toggleCategory = (category: string) => {
     setSelected((prev) =>
@@ -36,7 +36,6 @@ const OnboardingStep2 = () => {
   };
 
   const handleComplete = async () => {
-    setError("");
     setIsSubmitting(true);
     try {
       const role = sessionStorage.getItem("onboarding_role") as UserRole | null;
@@ -50,7 +49,7 @@ const OnboardingStep2 = () => {
       if (token) login(updatedUser, token);
       navigate("/explore");
     } catch (err) {
-      setError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -60,7 +59,7 @@ const OnboardingStep2 = () => {
     <AuthLayout>
       <div className="w-full max-w-[540px] flex flex-col gap-[25px]">
         <div className="relative pr-14 sm:pr-0">
-          <div className="flex flex-col gap-[8px]">
+          <div className="flex flex-col gap-[8px] text-start">
             <h1 className="text-[#FFFFFF] font-['Instrument_Serif'] font-normal text-[36px] sm:text-[45px] leading-[100%] tracking-[-0.02em]">
               You're Almost There
             </h1>
@@ -143,10 +142,6 @@ const OnboardingStep2 = () => {
             </div>
           ))}
         </div>
-
-        {error && (
-          <p className="text-[#FF7466] font-[Manrope] text-[14px]">{error}</p>
-        )}
 
         <button
           onClick={handleComplete}

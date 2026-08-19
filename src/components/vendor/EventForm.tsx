@@ -16,9 +16,14 @@ export interface EventFormData {
   image: string | null;
 }
 
+export type EventFormErrors = Partial<
+  Record<"name" | "overview" | "location" | "category" | "date", string>
+>;
+
 interface EventFormProps {
   onChange?: (data: EventFormData) => void;
   onUploadingChange?: (isUploading: boolean) => void;
+  errors?: EventFormErrors;
 }
 
 const inputBase =
@@ -26,7 +31,7 @@ const inputBase =
 const labelBase = "text-[#FFFFFF] text-[16px] font-normal";
 const requiredMark = <span className="text-[#FF7466]">*</span>;
 
-const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
+const EventForm = ({ onChange, onUploadingChange, errors = {} }: EventFormProps) => {
   const [form, setForm] = useState<EventFormData>({
     name: "",
     overview: "",
@@ -36,7 +41,7 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
     image: null,
   });
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const { upload, isUploading, error: imageError } = useImageUpload();
+  const { upload, isUploading } = useImageUpload();
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const categoryRef = useRef<HTMLDivElement>(null);
 
@@ -55,12 +60,15 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
   }, [isCategoryOpen]);
 
   const update = (patch: Partial<EventFormData>) => {
-    setForm((prev) => {
-      const next = { ...prev, ...patch };
-      onChange?.(next);
-      return next;
-    });
+    setForm((prev) => ({ ...prev, ...patch }));
   };
+
+  // Report the latest form state up to the parent after each commit, rather
+  // than calling onChange (which updates the parent's state) from inside
+  // this component's own setState updater.
+  useEffect(() => {
+    onChange?.(form);
+  }, [form, onChange]);
 
   const handleImage = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -84,8 +92,11 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
           value={form.name}
           onChange={(e) => update({ name: e.target.value })}
           placeholder="Enter event name"
-          className={inputBase}
+          className={`${inputBase} ${errors.name ? "border-[#FF7466]" : ""}`}
         />
+        {errors.name && (
+          <p className="text-[#FF7466] text-[13px]">{errors.name}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -95,8 +106,13 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
           onChange={(e) => update({ overview: e.target.value })}
           placeholder="Enter event details"
           rows={4}
-          className={`${inputBase} rounded-[24px] resize-none leading-relaxed hide-scrollbar`}
+          className={`${inputBase} rounded-[24px] resize-none leading-relaxed hide-scrollbar ${
+            errors.overview ? "border-[#FF7466]" : ""
+          }`}
         />
+        {errors.overview && (
+          <p className="text-[#FF7466] text-[13px]">{errors.overview}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -106,7 +122,7 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
             value={form.location}
             onChange={(e) => update({ location: e.target.value })}
             placeholder="Enter location address"
-            className={`${inputBase} pr-12`}
+            className={`${inputBase} pr-12 ${errors.location ? "border-[#FF7466]" : ""}`}
           />
           {/* <img
             src={arrowDown}
@@ -114,6 +130,9 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
             className="absolute right-5 pointer-events-none"
           /> */}
         </div>
+        {errors.location && (
+          <p className="text-[#FF7466] text-[13px]">{errors.location}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -124,7 +143,7 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
             onClick={() => setIsCategoryOpen((prev) => !prev)}
             className={`${inputBase} pr-12 flex items-center justify-between text-left ${
               form.category ? "" : "text-[#6E6E6E]"
-            }`}
+            } ${errors.category ? "border-[#FF7466]" : ""}`}
           >
             <span>{form.category || "Select category"}</span>
             <img
@@ -156,6 +175,9 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
             </div>
           )}
         </div>
+        {errors.category && (
+          <p className="text-[#FF7466] text-[13px]">{errors.category}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -164,12 +186,15 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
           value={form.date ?? undefined}
           onChange={(date) => update({ date: date ?? null })}
           placeholder="Select date"
-          className={inputBase}
+          className={`${inputBase} ${errors.date ? "border-[#FF7466]" : ""}`}
         />
+        {errors.date && (
+          <p className="text-[#FF7466] text-[13px]">{errors.date}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className={labelBase}>Image {requiredMark}</label>
+        <label className={labelBase}>Image</label>
         <div className="flex items-center gap-3">
           <span className="w-13 h-13 rounded-2xl bg-[#1A1A1A] border-2 border-[#262525] overflow-hidden flex items-center justify-center shrink-0">
             {previewImage || form.image ? (
@@ -198,9 +223,9 @@ const EventForm = ({ onChange, onUploadingChange }: EventFormProps) => {
             />
           </label>
         </div>
-        {imageError && (
-          <p className="text-[#FF7466] text-[14px]">{imageError}</p>
-        )}
+        <p className="text-[#6E6E6E] text-[13px]">
+          Optional — we'll use a placeholder cover if you skip this.
+        </p>
       </div>
     </div>
   );

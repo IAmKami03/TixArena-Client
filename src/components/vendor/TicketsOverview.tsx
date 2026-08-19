@@ -5,6 +5,7 @@ import userCheck from "../../assets/images/vendorImages/User Check.svg";
 import { useState } from "react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import EditModal from "./EditModal";
 import EventActionsMenu from "./EventActionsMenu";
 import CloseEventModal from "./CloseEventModal";
@@ -29,7 +30,6 @@ const TicketsOverview = ({ event, onEventChange }: TicketsOverviewProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCloseOpen, setIsCloseOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [actionError, setActionError] = useState("");
 
   const totalTickets = event.tickets.reduce((sum, t) => sum + t.quantity, 0);
   const soldTickets = event.tickets.reduce((sum, t) => sum + t.sold, 0);
@@ -40,8 +40,9 @@ const TicketsOverview = ({ event, onEventChange }: TicketsOverviewProps) => {
       const updated = await updateEvent(event._id, payload);
       onEventChange(updated);
       setIsEditOpen(false);
+      toast.success("Event updated.");
     } catch (err) {
-      setActionError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     }
   };
 
@@ -50,8 +51,9 @@ const TicketsOverview = ({ event, onEventChange }: TicketsOverviewProps) => {
       const updated = await closeEvent(event._id);
       onEventChange(updated);
       setIsCloseOpen(false);
+      toast.success("Event closed to new bookings.");
     } catch (err) {
-      setActionError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
     }
   };
 
@@ -60,16 +62,13 @@ const TicketsOverview = ({ event, onEventChange }: TicketsOverviewProps) => {
       await deleteEvent(event._id);
       navigate("/vendor");
     } catch (err) {
-      setActionError(getErrorMessage(err));
+      toast.error(getErrorMessage(err));
       setIsDeleteOpen(false);
     }
   };
 
   return (
     <div className="flex flex-col gap-6">
-      {actionError && (
-        <p className="text-[#FF7466] text-[14px]">{actionError}</p>
-      )}
       <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4 sm:gap-0">
         <div className="flex flex-col gap-1 items-start ">
           <div className="flex gap-2.5 items-center">
