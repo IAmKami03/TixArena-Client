@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { LuChevronDown, LuMail, LuTicket, LuUserCog, LuShieldCheck } from "react-icons/lu";
+import {
+  LuChevronDown,
+  LuMail,
+  LuTicket,
+  LuUserCog,
+  LuShieldCheck,
+} from "react-icons/lu";
 import whatsappIcon from "../assets/images/eventsImages/whatsapp.svg";
 
 interface FaqItem {
@@ -56,7 +62,7 @@ const FAQ_SECTIONS: FaqSection[] = [
     items: [
       {
         q: "How do I reset my password?",
-        a: "Use the \"Forgot password?\" link on the sign-in page to receive a reset link by email.",
+        a: 'Use the "Forgot password?" link on the sign-in page to receive a reset link by email.',
       },
       {
         q: "Is my payment or personal information safe?",
@@ -116,7 +122,9 @@ const HelpPage = () => {
                         <LuChevronDown
                           size={16}
                           className={`shrink-0 transition-transform ${
-                            isOpen ? "rotate-180 text-[#995DFF]" : "text-[#7A7A7A]"
+                            isOpen
+                              ? "rotate-180 text-[#995DFF]"
+                              : "text-[#7A7A7A]"
                           }`}
                         />
                       </button>
@@ -136,7 +144,7 @@ const HelpPage = () => {
         {/* Contact */}
         <div className="mt-16 bg-[#0F0F0F] border border-[#262525] rounded-[30px] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div>
-            <h2 className="text-white text-[19px] font-semibold">
+            <h2 className="text-white text-start text-[19px] font-semibold">
               Still stuck?
             </h2>
             <p className="text-[#ABABAB] text-[14px] mt-1">
@@ -148,11 +156,11 @@ const HelpPage = () => {
               href="mailto:hello@logopsum.com"
               className="flex items-center gap-2 text-[#CECECE] hover:text-white transition-colors"
             >
-              <LuMail size={16} /> hello@logopsum.com
+              <LuMail size={16} /> tixarenaofficial@gmail.com
             </a>
             <span className="flex items-center gap-2 text-[#CECECE]">
               <img src={whatsappIcon} alt="" className="w-4 h-4" />
-              +1 891 989-11-91
+              09027060858
             </span>
           </div>
         </div>
