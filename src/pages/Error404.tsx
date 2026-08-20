@@ -5,7 +5,7 @@ const Error404 = () => {
     <div className="flex justify-center">
       <div className=" w-[540px] h-[300px] flex flex-col justify-center items-center p-4 border-[#1E1E1E] mt-10">
         <img src={image} alt="" className="w-[250px]" />
-        <p className="font-normal text-[40px] text-[#FFFFFF]">
+        <p className="font-normal fnt  text-[40px] text-[#FFFFFF]">
           Lost in the party?
         </p>
         <p className="text-[#ABABAB] font-normal text-[16px]">
