@@ -3,7 +3,7 @@ import image from "../assets/images/Group 12.svg";
 const Error404 = () => {
   return (
     <div className="flex justify-center">
-      <div className="border w-[540px] h-[300px] flex flex-col justify-center items-center p-4 border-[#1E1E1E] mt-10">
+      <div className=" w-[540px] h-[300px] flex flex-col justify-center items-center p-4 border-[#1E1E1E] mt-10">
         <img src={image} alt="" className="w-[250px]" />
         <p className="font-normal text-[40px] text-[#FFFFFF]">
           Lost in the party?
